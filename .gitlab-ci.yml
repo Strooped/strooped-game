@@ -44,7 +44,10 @@ Detekt:
 Unittest:
   stage: test
   script:
-    - ./gradlew -Pci --console=plain :app:testDebug
+    - ./gradlew -Pci --console=plain test
+  artifacts:
+    paths:
+      - core/build/reports/tests/test/
 
 assemble:
   stage: build
