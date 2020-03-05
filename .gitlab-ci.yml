@@ -22,23 +22,34 @@ before_script:
   - set -o pipefail
 
 stages:
+  - quality
   - build
   - test
 
-lintDebug:
-  stage: build
+Android lint:
+  stage: quality
   script:
-    - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
+    - ./gradlew -Pci --console=plain lintDebug -PbuildDir=lint
 
-assembleDebug:
+Ktlint:
+  stage: quality
+  script:
+    - ./gradlew -Pci --console=plain ktlint
+
+Detekt:
+  stage: quality
+  script:
+    - ./gradlew -Pci --console=plain detekt
+
+Unittest:
+  stage: test
+  script:
+    - ./gradlew -Pci --console=plain :app:testDebug
+
+assemble:
   stage: build
   script:
     - ./gradlew assembleDebug
   artifacts:
     paths:
       - app/build/outputs/
-
-debugTests:
-  stage: test
-  script:
-    - ./gradlew -Pci --console=plain :app:testDebug
