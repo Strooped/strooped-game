@@ -11,6 +11,6 @@ internal class StroopedTest {
 
     @Test
     fun `Succeedes`() {
-        assertEquals(true, true)
+        assertEquals(true, false)
     }
 }
