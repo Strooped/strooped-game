@@ -6,7 +6,12 @@ import no.strooped.Strooped;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new Strooped(), config);
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.width = 480;
+        config.height = 700;
+        config.title = Strooped.TITLE;
+        config.x = 400;
+        config.y = 0;
+        new LwjglApplication(new Strooped(), config);
 	}
 }
