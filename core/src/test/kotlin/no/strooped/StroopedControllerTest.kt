@@ -7,7 +7,7 @@ import org.junit.Test
  * Guide on how to setup tests in libgdx
  * http://techduke.io/junit-testing-of-libgdx-game-in-android-studio/
  * */
-internal class StroopedTest {
+internal class StroopedControllerTest {
 
     @Test
     fun `Succeedes`() {

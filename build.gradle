@@ -52,6 +52,7 @@ project(":android") {
 
     dependencies {
         implementation project(":core")
+        implementation "com.badlogicgames.ashley:ashley:1.7.3"
         api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
@@ -76,6 +77,7 @@ project(":core") {
         implementation "junit:junit:$junitVersion"
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        implementation "com.badlogicgames.ashley:ashley:1.7.3"
         api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     }
 }
@@ -86,6 +88,7 @@ project(":desktop") {
 
     dependencies {
         implementation project(":core")
+        implementation "com.badlogicgames.ashley:ashley:1.7.3"
         api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
