@@ -1,16 +1,18 @@
 package no.strooped
 
-import com.badlogic.gdx.ApplicationAdapter
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.mygdx.game.states.GameStateManager
 import com.mygdx.game.states.MenuState
 
-class Strooped : ApplicationAdapter() {
+const val TITLE = "Paddle"
+
+class Strooped : Game() {
     var batch: SpriteBatch? = null
     private var gsm: GameStateManager? = null
-    val TITLE = "Paddle"
+
     override fun create() {
         batch = SpriteBatch()
         gsm = GameStateManager()
