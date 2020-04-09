@@ -3,7 +3,6 @@ package no.strooped.view.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -13,17 +12,19 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.sun.org.apache.xpath.internal.operations.Or
 import no.strooped.StroopedController
 import no.strooped.TextureSizes
 
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
+const val FONT_SIZE = 5.0f
+ const val NAME_OF_SKIN = "background"
+ const val TEMP_SIZE = 10
+
 class JoinGameScreen(val controller: StroopedController) : Screen {
     var ui: Stage = Stage(ScreenViewport())
 
@@ -40,20 +41,19 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
     lateinit var batch: SpriteBatch
 
     init {
-        val tempSize = 10
         cam.setToOrtho(false, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
-        val temp = NinePatch(Texture("white.jpg"), tempSize, tempSize, tempSize, tempSize)
+        val temp = NinePatch(Texture("white.jpg"), TEMP_SIZE, TEMP_SIZE, TEMP_SIZE, TEMP_SIZE)
         val skin = Skin()
-        val nameOfSkin = "background"
-        skin.add(nameOfSkin, temp)
+        skin.add(NAME_OF_SKIN, temp)
         style = TextField.TextFieldStyle()
         style.fontColor = Color.BLACK
         style.font = BitmapFont()
-        val sizeOfFont = 5.0f
-        style.font.data.setScale(sizeOfFont)
-        style.background = skin.getDrawable(nameOfSkin)
+        style.font.data.setScale(FONT_SIZE)
+        style.background = skin.getDrawable(NAME_OF_SKIN)
 
+        @Suppress("MagicNumber")
         val userPositionX = Gdx.graphics.width.toFloat() * 0.15f
+        @Suppress("MagicNumber")
         val userPositionY = Gdx.graphics.height.toFloat() * 0.5f
         username = TextField("", style)
         username.setPosition(userPositionX, userPositionY)
@@ -61,7 +61,9 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
         username.setSize(TextureSizes.inputBoxWidth(), TextureSizes.inputBoxHeight())
         Gdx.input.inputProcessor = ui
 
+        @Suppress("MagicNumber")
         val pinPositionX = Gdx.graphics.width.toFloat() * 0.15f
+        @Suppress("MagicNumber")
         val pinPositionY = Gdx.graphics.height.toFloat() * 0.38f
         pin = TextField("", style)
         pin.setPosition(pinPositionX, pinPositionY)
@@ -70,7 +72,7 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
         Gdx.input.inputProcessor = ui
     }
 
-    override fun hide(){}
+    override fun hide() {}
 
     override fun show() {
         batch = SpriteBatch()
@@ -90,10 +92,12 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
             Gdx.graphics.width.toFloat(),
             Gdx.graphics.height.toFloat()
         )
+        val logoPosX = (Gdx.graphics.width.toFloat() - TextureSizes.logoWidth()) * 0.5f
+        val logoPosY = Gdx.graphics.height.toFloat() * 0.75f - TextureSizes.logoHeight() * 0.5f
         batch.draw(
             logo,
-            (Gdx.graphics.width.toFloat() - TextureSizes.logoWidth()) * 0.5f,
-            Gdx.graphics.height.toFloat() * 0.75f - TextureSizes.logoHeight() * 0.5f,
+            logoPosX,
+            logoPosY,
             TextureSizes.logoWidth(),
             TextureSizes.logoHeight()
         )
@@ -122,25 +126,19 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
         ui.draw()
     }
 
-    /**
-     * Override this sucker to implement any custom drawing
-     * @param delta The number of seconds that have passed since the last frame.
-     */
-    private fun draw(delta: Float) {}
-
     override fun pause() {}
 
     override fun resume() {}
 
     override fun resize(width: Int, height: Int) {
-        ui.viewport?.update(width, height);
+        ui.viewport?.update(width, height)
     }
 
     override fun dispose() {
         ui.dispose()
     }
 
-    fun handleInput() {
+    private fun handleInput() {
         if (Gdx.input.justTouched()) {
             val rec = Rectangle(
                 (Gdx.graphics.width.toFloat() - TextureSizes.joinGameButtonWidth()) * 0.5f,
@@ -150,8 +148,8 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
             val touchX = Gdx.input.x.toFloat()
             val touchY = cam.viewportHeight - Gdx.input.y
             if (rec.contains(Vector2(touchX, touchY))) {
-                System.out.println("Touch")
-                //gsm.set(PlayState(gsm))
+                println("Touch")
+                // gsm.set(PlayState(gsm))
             }
         }
     }

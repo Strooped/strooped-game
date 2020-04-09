@@ -1,7 +1,7 @@
 package no.strooped
 
 import com.badlogic.gdx.Gdx
-
+@Suppress("MagicNumber")
 object TextureSizes {
         // logo on JoinGameScreen
         fun logoWidth(): Float = 2 * Gdx.graphics.width * (543f / 1080f)

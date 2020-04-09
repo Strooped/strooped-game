@@ -1,4 +1,3 @@
 package no.strooped.controller
 
-abstract class AbstractController {
-}
+abstract class AbstractController
