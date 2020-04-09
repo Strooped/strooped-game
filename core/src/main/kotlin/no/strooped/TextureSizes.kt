@@ -22,4 +22,8 @@ object TextureSizes {
         // pinLabel on JoinGameScreen
         fun pinLabelWidth(): Float = Gdx.graphics.width * (115f / 1080f)
         fun pinLabelHeight(): Float = Gdx.graphics.height * (64f / 2040f)
+
+        // loadCircle on LobbyScreen
+        fun loadWidth(): Float = Gdx.graphics.width * (105f / 1080f)
+        fun loadHeight(): Float = Gdx.graphics.height * (105f / 2040f)
 }

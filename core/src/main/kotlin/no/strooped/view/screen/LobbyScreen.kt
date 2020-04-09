@@ -1,20 +1,14 @@
 package no.strooped.view.screen
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import no.strooped.StroopedController
 import no.strooped.TextureSizes
@@ -22,11 +16,8 @@ import no.strooped.TextureSizes
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
-const val FONT_SIZE = 2.0f // might need a change, not right now
-const val NAME_OF_SKIN = "background"
-const val TEMP_SIZE = 10
 
-class JoinGameScreen(val controller: StroopedController) : Screen {
+class LobbyScreen(val controller: StroopedController) : Screen {
     var ui: Stage = Stage(ScreenViewport())
 
     var cam: OrthographicCamera = OrthographicCamera()
@@ -34,44 +25,23 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
     var background: Texture = Texture("white.jpg")
     var logo: Texture = Texture("Strooped1.png")
     var joinBtn: Texture = Texture("join_game_button.png")
-    var userLabel: Texture = Texture("Username1.png")
-    var pinLabel: Texture = Texture("Pin.png")
-    var style: TextField.TextFieldStyle
-    var username: TextField
-    var pin: TextField
+    var loadAnim: Array<Texture?>
+
+    var elapsedTime = 0f
     lateinit var batch: SpriteBatch
+
+    var iterat = 0
 
     init {
         cam.setToOrtho(false, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
-        val temp = NinePatch(Texture("white.jpg"), TEMP_SIZE, TEMP_SIZE, TEMP_SIZE, TEMP_SIZE)
-        val skin = Skin()
-        skin.add(NAME_OF_SKIN, temp)
-        style = TextField.TextFieldStyle()
-        style.font = BitmapFont(Gdx.files.internal("chunkfive.fnt"))
-        style.fontColor = Color.BLACK
-        // style.font = BitmapFont()
-        style.font.data.setScale(FONT_SIZE)
-        style.background = skin.getDrawable(NAME_OF_SKIN)
+        batch = SpriteBatch()
 
-        @Suppress("MagicNumber")
-        val userPositionX = Gdx.graphics.width.toFloat() * 0.15f
-        @Suppress("MagicNumber")
-        val userPositionY = Gdx.graphics.height.toFloat() * 0.5f
-        username = TextField("", style)
-        username.setPosition(userPositionX, userPositionY)
-        ui.addActor(username)
-        username.setSize(TextureSizes.inputBoxWidth(), TextureSizes.inputBoxHeight())
-        Gdx.input.inputProcessor = ui
+        loadAnim = arrayOfNulls(4)
+        loadAnim[0] = Texture("load1.jpg")
+        loadAnim[1] = Texture("load2.jpg")
+        loadAnim[2] = Texture("load3.jpg")
+        loadAnim[3] = Texture("load4.jpg")
 
-        @Suppress("MagicNumber")
-        val pinPositionX = Gdx.graphics.width.toFloat() * 0.15f
-        @Suppress("MagicNumber")
-        val pinPositionY = Gdx.graphics.height.toFloat() * 0.38f
-        pin = TextField("", style)
-        pin.setPosition(pinPositionX, pinPositionY)
-        ui.addActor(pin)
-        pin.setSize(TextureSizes.inputBoxWidth(), TextureSizes.inputBoxHeight())
-        Gdx.input.inputProcessor = ui
     }
 
     override fun hide() {}
@@ -82,7 +52,7 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
 
     override fun render(delta: Float) {
         handleInput()
-
+        elapsedTime += Gdx.graphics.deltaTime
         batch.projectionMatrix = cam.combined
         batch.begin()
         val backPosX = cam.position.x - cam.viewportWidth / 2f
@@ -94,7 +64,17 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
             Gdx.graphics.width.toFloat(),
             Gdx.graphics.height.toFloat()
         )
-        val logoPosX = (Gdx.graphics.width.toFloat() - TextureSizes.logoWidth()) * 0.5f
+        val loadPosX = (Gdx.graphics.width.toFloat() - TextureSizes.loadWidth()) * 0.5f
+        val loadPosY = Gdx.graphics.height.toFloat() * 0.5f - TextureSizes.loadHeight() * 0.5f
+        val refreshInterval = 0.1f
+        if (elapsedTime > refreshInterval) {
+            iterat++
+            elapsedTime = 0f
+            if (iterat == 4)
+                iterat = 0
+        }
+        batch.draw(loadAnim[iterat],loadPosX,loadPosY, TextureSizes.loadWidth(), TextureSizes.loadHeight())
+        /*val logoPosX = (Gdx.graphics.width.toFloat() - TextureSizes.logoWidth()) * 0.5f
         val logoPosY = Gdx.graphics.height.toFloat() * 0.75f - TextureSizes.logoHeight() * 0.5f
         batch.draw(
             logo,
@@ -111,25 +91,7 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
             joinBtnPosY,
             TextureSizes.joinGameButtonWidth(),
             TextureSizes.joinGameButtonHeight()
-        )
-        val userLabelPosX = username.x + (TextureSizes.inputBoxWidth() - TextureSizes.userLabelWidth()) * 0.5f
-        val userLabelPosY = username.y + TextureSizes.inputBoxHeight() * 1.2f
-        batch.draw(
-            userLabel,
-            userLabelPosX,
-            userLabelPosY,
-            TextureSizes.userLabelWidth(),
-            TextureSizes.userLabelHeight()
-        )
-        val pinLabelPosX = pin.x + (TextureSizes.inputBoxWidth() - TextureSizes.pinLabelWidth()) * 0.5f
-        val pinLabelPosY = pin.y + TextureSizes.inputBoxHeight() * 1.2f
-        batch.draw(
-            pinLabel,
-            pinLabelPosX,
-            pinLabelPosY,
-            TextureSizes.pinLabelWidth(),
-            TextureSizes.pinLabelHeight()
-        )
+        )*/
         batch.end()
         ui.draw()
     }
@@ -144,7 +106,6 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
 
     override fun dispose() {
         ui.dispose()
-        batch.dispose()
     }
 
     private fun handleInput() {
@@ -159,7 +120,6 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
             if (rec.contains(Vector2(touchX, touchY))) {
                 println("Touch")
                 // gsm.set(PlayState(gsm))
-                controller.connectToGame(username = username.text, joinPin = pin.text)
             }
         }
     }

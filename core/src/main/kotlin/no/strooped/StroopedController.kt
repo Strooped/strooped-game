@@ -5,13 +5,14 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.utils.ObjectMap
 import no.strooped.service.JoinGameService
 import no.strooped.view.screen.JoinGameScreen
+import no.strooped.view.screen.LobbyScreen
 
 const val TITLE = "Paddle"
 
 class StroopedController : Game() {
     private val screens: ObjectMap<Class<out Screen>, Screen> = ObjectMap()
-
-    lateinit var joinGameService: JoinGameService
+    var username = ""
+    var joinGameService: JoinGameService = JoinGameService(socketService = Any())
 
     override fun create() {
         loadScreens()
@@ -32,10 +33,14 @@ class StroopedController : Game() {
         // Call JoinGameService to connect
         // ...
         joinGameService.joinGame(username, joinPin)
+        // success
+        this.username = username
+        changeScreen(LobbyScreen::class.java)
     }
 
     private fun loadScreens() {
         screens.put(JoinGameScreen::class.java, JoinGameScreen(this))
+        screens.put(LobbyScreen::class.java, LobbyScreen(this))
     }
 
     private fun inititalizeServices() {
