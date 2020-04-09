@@ -40,31 +40,37 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
     lateinit var batch: SpriteBatch
 
     init {
+        val tempSize = 10
         cam.setToOrtho(false, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
-        val temp = NinePatch(Texture("white.jpg"), 10, 10, 10, 10)
+        val temp = NinePatch(Texture("white.jpg"), tempSize, tempSize, tempSize, tempSize)
         val skin = Skin()
-        skin.add("background", temp)
+        val nameOfSkin = "background"
+        skin.add(nameOfSkin, temp)
         style = TextField.TextFieldStyle()
         style.fontColor = Color.BLACK
         style.font = BitmapFont()
-        style.font.data.setScale(5.0f)
-        style.background = skin.getDrawable("background");
+        val sizeOfFont = 5.0f
+        style.font.data.setScale(sizeOfFont)
+        style.background = skin.getDrawable(nameOfSkin)
 
+        val userPositionX = Gdx.graphics.width.toFloat() * 0.15f
+        val userPositionY = Gdx.graphics.height.toFloat() * 0.5f
         username = TextField("", style)
-        username.setPosition(Gdx.graphics.width.toFloat() * 0.15f, Gdx.graphics.height.toFloat() * 0.5f)
+        username.setPosition(userPositionX, userPositionY)
         ui.addActor(username)
         username.setSize(TextureSizes.inputBoxWidth(), TextureSizes.inputBoxHeight())
         Gdx.input.inputProcessor = ui
 
+        val pinPositionX = Gdx.graphics.width.toFloat() * 0.15f
+        val pinPositionY = Gdx.graphics.height.toFloat() * 0.38f
         pin = TextField("", style)
-        pin.setPosition(Gdx.graphics.width.toFloat() * 0.15f, Gdx.graphics.height.toFloat() * 0.38f)
+        pin.setPosition(pinPositionX, pinPositionY)
         ui.addActor(pin)
         pin.setSize(TextureSizes.inputBoxWidth(), TextureSizes.inputBoxHeight())
         Gdx.input.inputProcessor = ui
     }
 
-    override fun hide() {
-    }
+    override fun hide(){}
 
     override fun show() {
         batch = SpriteBatch()
@@ -75,11 +81,43 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
 
         batch.projectionMatrix = cam.combined
         batch.begin()
-        batch.draw(background, cam.position.x - cam.viewportWidth / 2, 0f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
-        batch.draw(logo, (Gdx.graphics.width.toFloat() - TextureSizes.logoWidth()) * 0.5f, Gdx.graphics.height.toFloat() * 0.75f - TextureSizes.logoHeight() * 0.5f,  TextureSizes.logoWidth(), TextureSizes.logoHeight())
-        batch.draw(joinBtn, (Gdx.graphics.width.toFloat() - TextureSizes.joinGameButtonWidth()) * 0.5f, Gdx.graphics.height.toFloat() * 0.27f, TextureSizes.joinGameButtonWidth(), TextureSizes.joinGameButtonHeight())
-        batch.draw(userLabel, username.x + (TextureSizes.inputBoxWidth() - TextureSizes.userLabelWidth()) * 0.5f, username.y + TextureSizes.inputBoxHeight() * 1.2f, TextureSizes.userLabelWidth(), TextureSizes.userLabelHeight())
-        batch.draw(pinLabel, pin.x + (TextureSizes.inputBoxWidth() - TextureSizes.pinLabelWidth()) * 0.5f, pin.y + TextureSizes.inputBoxHeight() * 1.2f, TextureSizes.pinLabelWidth(), TextureSizes.pinLabelHeight())
+        val backPosX = cam.position.x - cam.viewportWidth / 2f
+        val backPosY = 0f
+        batch.draw(
+            background,
+            backPosX,
+            backPosY,
+            Gdx.graphics.width.toFloat(),
+            Gdx.graphics.height.toFloat()
+        )
+        batch.draw(
+            logo,
+            (Gdx.graphics.width.toFloat() - TextureSizes.logoWidth()) * 0.5f,
+            Gdx.graphics.height.toFloat() * 0.75f - TextureSizes.logoHeight() * 0.5f,
+            TextureSizes.logoWidth(),
+            TextureSizes.logoHeight()
+        )
+        batch.draw(
+            joinBtn,
+            (Gdx.graphics.width.toFloat() - TextureSizes.joinGameButtonWidth()) * 0.5f,
+            Gdx.graphics.height.toFloat() * 0.27f,
+            TextureSizes.joinGameButtonWidth(),
+            TextureSizes.joinGameButtonHeight()
+        )
+        batch.draw(
+            userLabel,
+            username.x + (TextureSizes.inputBoxWidth() - TextureSizes.userLabelWidth()) * 0.5f,
+            username.y + TextureSizes.inputBoxHeight() * 1.2f,
+            TextureSizes.userLabelWidth(),
+            TextureSizes.userLabelHeight()
+        )
+        batch.draw(
+            pinLabel,
+            pin.x + (TextureSizes.inputBoxWidth() - TextureSizes.pinLabelWidth()) * 0.5f,
+            pin.y + TextureSizes.inputBoxHeight() * 1.2f,
+            TextureSizes.pinLabelWidth(),
+            TextureSizes.pinLabelHeight()
+        )
         batch.end()
         ui.draw()
     }
@@ -90,11 +128,9 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
      */
     private fun draw(delta: Float) {}
 
-    override fun pause() {
-    }
+    override fun pause() {}
 
-    override fun resume() {
-    }
+    override fun resume() {}
 
     override fun resize(width: Int, height: Int) {
         ui.viewport?.update(width, height);
@@ -106,7 +142,11 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
 
     fun handleInput() {
         if (Gdx.input.justTouched()) {
-            val rec = Rectangle((Gdx.graphics.width.toFloat() - TextureSizes.joinGameButtonWidth()) * 0.5f, Gdx.graphics.height.toFloat() * 0.27f, TextureSizes.joinGameButtonWidth(), TextureSizes.joinGameButtonHeight())
+            val rec = Rectangle(
+                (Gdx.graphics.width.toFloat() - TextureSizes.joinGameButtonWidth()) * 0.5f,
+                Gdx.graphics.height.toFloat() * 0.27f,
+                TextureSizes.joinGameButtonWidth(),
+                TextureSizes.joinGameButtonHeight())
             val touchX = Gdx.input.x.toFloat()
             val touchY = cam.viewportHeight - Gdx.input.y
             if (rec.contains(Vector2(touchX, touchY))) {
