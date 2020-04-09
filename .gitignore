@@ -128,3 +128,4 @@ Thumbs.db
 
 lint/
 (android|core)/lint/
+node_modules/
