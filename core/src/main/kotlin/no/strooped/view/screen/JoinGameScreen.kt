@@ -21,9 +21,9 @@ import no.strooped.TextureSizes
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
-const val FONT_SIZE = 5.0f
- const val NAME_OF_SKIN = "background"
- const val TEMP_SIZE = 10
+    const val FONT_SIZE = 5.0f
+    const val NAME_OF_SKIN = "background"
+    const val TEMP_SIZE = 10
 
 class JoinGameScreen(val controller: StroopedController) : Screen {
     var ui: Stage = Stage(ScreenViewport())
