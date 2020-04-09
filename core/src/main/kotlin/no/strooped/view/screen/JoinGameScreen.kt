@@ -101,24 +101,30 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
             TextureSizes.logoWidth(),
             TextureSizes.logoHeight()
         )
+        val joinBtnPosX = (Gdx.graphics.width.toFloat() - TextureSizes.joinGameButtonWidth()) * 0.5f
+        val joinBtnPosY = Gdx.graphics.height.toFloat() * 0.27f
         batch.draw(
             joinBtn,
-            (Gdx.graphics.width.toFloat() - TextureSizes.joinGameButtonWidth()) * 0.5f,
-            Gdx.graphics.height.toFloat() * 0.27f,
+            joinBtnPosX,
+            joinBtnPosY,
             TextureSizes.joinGameButtonWidth(),
             TextureSizes.joinGameButtonHeight()
         )
+        val userLabelPosX = username.x + (TextureSizes.inputBoxWidth() - TextureSizes.userLabelWidth()) * 0.5f
+        val userLabelPosY = username.y + TextureSizes.inputBoxHeight() * 1.2f
         batch.draw(
             userLabel,
-            username.x + (TextureSizes.inputBoxWidth() - TextureSizes.userLabelWidth()) * 0.5f,
-            username.y + TextureSizes.inputBoxHeight() * 1.2f,
+            userLabelPosX,
+            userLabelPosY,
             TextureSizes.userLabelWidth(),
             TextureSizes.userLabelHeight()
         )
+        val pinLabelPosX = pin.x + (TextureSizes.inputBoxWidth() - TextureSizes.pinLabelWidth()) * 0.5f
+        val pinLabelPosY = pin.y + TextureSizes.inputBoxHeight() * 1.2f
         batch.draw(
             pinLabel,
-            pin.x + (TextureSizes.inputBoxWidth() - TextureSizes.pinLabelWidth()) * 0.5f,
-            pin.y + TextureSizes.inputBoxHeight() * 1.2f,
+            pinLabelPosX,
+            pinLabelPosY,
             TextureSizes.pinLabelWidth(),
             TextureSizes.pinLabelHeight()
         )
