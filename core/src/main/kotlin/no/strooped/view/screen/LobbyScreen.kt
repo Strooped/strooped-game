@@ -30,18 +30,18 @@ class LobbyScreen(val controller: StroopedController) : Screen {
     var elapsedTime = 0f
     lateinit var batch: SpriteBatch
 
-    var iterat = 0
+    private var iterat = 0
+    private val numberOfFrames = 4
 
     init {
         cam.setToOrtho(false, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         batch = SpriteBatch()
 
-        loadAnim = arrayOfNulls(4)
+        loadAnim = arrayOfNulls(numberOfFrames)
         loadAnim[0] = Texture("load1.jpg")
         loadAnim[1] = Texture("load2.jpg")
         loadAnim[2] = Texture("load3.jpg")
         loadAnim[3] = Texture("load4.jpg")
-
     }
 
     override fun hide() {}
@@ -70,10 +70,11 @@ class LobbyScreen(val controller: StroopedController) : Screen {
         if (elapsedTime > refreshInterval) {
             iterat++
             elapsedTime = 0f
-            if (iterat == 4)
+            if (iterat == numberOfFrames) {
                 iterat = 0
+            }
         }
-        batch.draw(loadAnim[iterat],loadPosX,loadPosY, TextureSizes.loadWidth(), TextureSizes.loadHeight())
+        batch.draw(loadAnim[iterat], loadPosX, loadPosY, TextureSizes.loadWidth(), TextureSizes.loadHeight())
         /*val logoPosX = (Gdx.graphics.width.toFloat() - TextureSizes.logoWidth()) * 0.5f
         val logoPosY = Gdx.graphics.height.toFloat() * 0.75f - TextureSizes.logoHeight() * 0.5f
         batch.draw(
