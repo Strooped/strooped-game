@@ -24,6 +24,10 @@ object TextureSizes {
         fun pinLabelHeight(): Float = Gdx.graphics.height * (64f / 2040f)
 
         // loadCircle on LobbyScreen
-        fun loadWidth(): Float = Gdx.graphics.width * (105f / 1080f)
-        fun loadHeight(): Float = Gdx.graphics.height * (105f / 2040f)
+        fun loadWidth(): Float = Gdx.graphics.width * (130f / 1080f) // 105
+        fun loadHeight(): Float = Gdx.graphics.height * (130f / 2040f)
+
+        // loadCircle on LobbyScreen
+        fun exitGameButtonWidth(): Float = Gdx.graphics.width * (376f / 1080f)
+        fun exitGameButtonHeight(): Float = Gdx.graphics.height * (100f / 2040f)
 }

@@ -21,7 +21,7 @@ import no.strooped.TextureSizes
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
-const val FONT_SIZE = 2.0f // might need a change, not right now
+const val FONT_SIZE_INPUT_FIELDS = 2.0f // might need a change, not right now
 const val NAME_OF_SKIN = "background"
 const val TEMP_SIZE = 10
 
@@ -40,6 +40,9 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
     var pin: TextField
     lateinit var batch: SpriteBatch
 
+    val joinBtnPosX = (Gdx.graphics.width.toFloat() - TextureSizes.joinGameButtonWidth()) * 0.5f
+    val joinBtnPosY = Gdx.graphics.height.toFloat() * 0.27f
+
     init {
         cam.setToOrtho(false, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         val temp = NinePatch(Texture("white.jpg"), TEMP_SIZE, TEMP_SIZE, TEMP_SIZE, TEMP_SIZE)
@@ -49,7 +52,7 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
         style.font = BitmapFont(Gdx.files.internal("chunkfive.fnt"))
         style.fontColor = Color.BLACK
         // style.font = BitmapFont()
-        style.font.data.setScale(FONT_SIZE)
+        style.font.data.setScale(FONT_SIZE_INPUT_FIELDS)
         style.background = skin.getDrawable(NAME_OF_SKIN)
 
         @Suppress("MagicNumber")
@@ -102,8 +105,6 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
             TextureSizes.logoWidth(),
             TextureSizes.logoHeight()
         )
-        val joinBtnPosX = (Gdx.graphics.width.toFloat() - TextureSizes.joinGameButtonWidth()) * 0.5f
-        val joinBtnPosY = Gdx.graphics.height.toFloat() * 0.27f
         batch.draw(
             joinBtn,
             joinBtnPosX,
@@ -149,8 +150,8 @@ class JoinGameScreen(val controller: StroopedController) : Screen {
     private fun handleInput() {
         if (Gdx.input.justTouched()) {
             val rec = Rectangle(
-                (Gdx.graphics.width.toFloat() - TextureSizes.joinGameButtonWidth()) * 0.5f,
-                Gdx.graphics.height.toFloat() * 0.27f,
+                joinBtnPosX,
+                joinBtnPosY,
                 TextureSizes.joinGameButtonWidth(),
                 TextureSizes.joinGameButtonHeight())
             val touchX = Gdx.input.x.toFloat()

@@ -7,7 +7,7 @@ import no.strooped.service.JoinGameService
 import no.strooped.view.screen.JoinGameScreen
 import no.strooped.view.screen.LobbyScreen
 
-const val TITLE = "Paddle"
+const val TITLE = "Strooped"
 
 class StroopedController : Game() {
     private val screens: ObjectMap<Class<out Screen>, Screen> = ObjectMap()
@@ -17,15 +17,15 @@ class StroopedController : Game() {
     override fun create() {
         loadScreens()
         inititalizeServices()
-        changeScreen(JoinGameScreen::class.java)
+        changeScreen(JoinGameScreen(this))
     }
 
     override fun dispose() {
 //        batch!!.dispose()
     }
 
-    fun changeScreen(key: Class<out Screen>) {
-        setScreen(screens.get(key))
+    fun changeScreen(screen: Screen) {
+        setScreen(screen)
 //        handle(GameEvent("SCREEN_CHANGE").set("SCREEN", screens.get(key)))
     }
 
@@ -35,12 +35,15 @@ class StroopedController : Game() {
         joinGameService.joinGame(username, joinPin)
         // success
         this.username = username
-        changeScreen(LobbyScreen::class.java)
+        changeScreen(LobbyScreen(this))
+    }
+
+    fun exitLobby(){
+        changeScreen(JoinGameScreen(this))
     }
 
     private fun loadScreens() {
         screens.put(JoinGameScreen::class.java, JoinGameScreen(this))
-        screens.put(LobbyScreen::class.java, LobbyScreen(this))
     }
 
     private fun inititalizeServices() {
