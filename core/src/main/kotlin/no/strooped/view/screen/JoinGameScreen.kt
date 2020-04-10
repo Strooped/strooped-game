@@ -21,7 +21,7 @@ import no.strooped.TextureSizes
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
-const val FONT_SIZE_INPUT_FIELDS = 2.0f // might need a change, not right now
+val FONT_SIZE_INPUT_FIELDS = TextureSizes.adjustedFontSize(2.0f)
 const val NAME_OF_SKIN = "background"
 const val TEMP_SIZE = 10
 

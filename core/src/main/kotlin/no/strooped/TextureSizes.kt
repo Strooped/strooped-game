@@ -30,4 +30,8 @@ object TextureSizes {
         // loadCircle on LobbyScreen
         fun exitGameButtonWidth(): Float = Gdx.graphics.width * (376f / 1080f)
         fun exitGameButtonHeight(): Float = Gdx.graphics.height * (100f / 2040f)
+
+        fun adjustedFontSize(font: Float): Float {
+            return (Gdx.graphics.width + Gdx.graphics.height) / (3120f / font)
+        }
 }

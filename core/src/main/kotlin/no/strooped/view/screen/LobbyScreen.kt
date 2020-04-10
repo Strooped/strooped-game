@@ -19,7 +19,7 @@ import no.strooped.TextureSizes
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
-const val FONT_SIZE_WELCOME_TEXT = 3.0f // needs calibration
+val FONT_SIZE_WELCOME_TEXT = TextureSizes.adjustedFontSize(3.0f)
 class LobbyScreen(val controller: StroopedController) : Screen {
     var ui: Stage = Stage(ScreenViewport())
 
