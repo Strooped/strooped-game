@@ -38,7 +38,7 @@ class StroopedController : Game() {
         changeScreen(LobbyScreen(this))
     }
 
-    fun exitLobby(){
+    fun exitLobby() {
         changeScreen(JoinGameScreen(this))
     }
 
