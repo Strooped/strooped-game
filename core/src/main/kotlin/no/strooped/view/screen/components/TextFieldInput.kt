@@ -11,8 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import no.strooped.TextureSizes
 import no.strooped.util.Size
 
-private fun buildStyles(): TextField.TextFieldStyle
-{
+private fun buildStyles(): TextField.TextFieldStyle {
     val nameOfSkin = "background"
     val inputBoxBackgroundSize = 10
     val patch = NinePatch(
