@@ -19,7 +19,7 @@ import no.strooped.view.screen.components.Animation
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
-val FONT_SIZE_WELCOME_TEXT = TextureSizes.adjustedFontSize(3.0f)
+private val FONT_SIZE_WELCOME_TEXT = TextureSizes.adjustedFontSize(3.0f)
 class LobbyScreen(private val controller: StroopedController) : Screen {
     private var ui: Stage = Stage(ScreenViewport())
     private var batch: SpriteBatch
