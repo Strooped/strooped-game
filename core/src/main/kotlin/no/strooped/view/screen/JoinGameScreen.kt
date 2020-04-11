@@ -16,7 +16,6 @@ import no.strooped.view.screen.components.TextFieldInput
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
-private val FONT_SIZE_INPUT_FIELDS = TextureSizes.adjustedFontSize(2.0f)
 class JoinGameScreen(private val controller: StroopedController) : Screen {
 
     var ui: Stage = Stage(ScreenViewport())

@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
+import no.strooped.TextureSizes
 import no.strooped.util.Size
-import no.strooped.view.screen.FONT_SIZE_INPUT_FIELDS
 
 private fun buildStyles(): TextField.TextFieldStyle
 {
@@ -24,10 +24,11 @@ private fun buildStyles(): TextField.TextFieldStyle
     )
     val skin = Skin()
     val myStyle = TextField.TextFieldStyle()
+    val fontSizeInputField = TextureSizes.adjustedFontSize(2.0f)
     skin.add(nameOfSkin, patch)
     myStyle.font = BitmapFont(Gdx.files.internal("chunkfive.fnt"))
     myStyle.fontColor = Color.BLACK
-    myStyle.font.data.setScale(FONT_SIZE_INPUT_FIELDS)
+    myStyle.font.data.setScale(fontSizeInputField)
     myStyle.background = skin.getDrawable(nameOfSkin)
     return myStyle
 }
