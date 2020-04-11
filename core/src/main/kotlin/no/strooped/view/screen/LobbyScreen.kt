@@ -9,54 +9,46 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import no.strooped.StroopedController
 import no.strooped.TextureSizes
+import no.strooped.view.screen.components.Animation
 
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
 val FONT_SIZE_WELCOME_TEXT = TextureSizes.adjustedFontSize(3.0f)
-class LobbyScreen(val controller: StroopedController) : Screen {
-    var ui: Stage = Stage(ScreenViewport())
+class LobbyScreen(private val controller: StroopedController) : Screen {
+    private var ui: Stage = Stage(ScreenViewport())
+    private var batch: SpriteBatch
+    private val cam: OrthographicCamera = OrthographicCamera()
+    private val background: Texture = Texture("white.jpg")
+    private val exitButton: Texture = Texture("exit_game_button.png")
+    private val loadingAnimation: Animation
 
-    var cam: OrthographicCamera = OrthographicCamera()
-    var mouse: Vector3 = Vector3()
-    var background: Texture = Texture("white.jpg")
-    var exitBtn: Texture = Texture("exit_game_button.png")
-    var loadAnim: Array<Texture?>
-
-    var elapsedTime = 0f
-    private lateinit var batch: SpriteBatch
-
-    private var iterat = 0
     private val numberOfFrames = 4
-
-    private val backPosX = cam.position.x - cam.viewportWidth / 2f
-    private val backPosY = 0f
-
-    private val exitBtnPosX = (Gdx.graphics.width.toFloat() - TextureSizes.exitGameButtonWidth()) * 0.5f
-    private val exitBtnPosY = Gdx.graphics.height.toFloat() * 0.1f
-
-    private val loadPosX = (Gdx.graphics.width.toFloat() - TextureSizes.loadWidth()) * 0.5f
-    private val loadPosY = (Gdx.graphics.height.toFloat() - TextureSizes.loadHeight()) * 0.35f
     private val refreshInterval = 0.1f
+
+    private val backgroundPosition = Vector2(cam.position.x - cam.viewportWidth * 0.5f, 0f)
+    private val exitButtonPosition = Vector2(
+        (Gdx.graphics.width.toFloat() - TextureSizes.exitGameButton.width) * 0.5f,
+        Gdx.graphics.height.toFloat() * 0.1f
+    )
+    private val loadSpinnerPosition = Vector2(
+        (Gdx.graphics.width.toFloat() - TextureSizes.loadSpinner.width) * 0.5f,
+        (Gdx.graphics.height.toFloat() - TextureSizes.loadSpinner.height) * 0.35f
+    )
 
     init {
         cam.setToOrtho(false, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         batch = SpriteBatch()
-
-        loadAnim = arrayOfNulls(numberOfFrames)
-        for (i in 0 until numberOfFrames) {
-            val nameOfImage = "load$i.jpg"
-            loadAnim[i] = Texture(nameOfImage)
-        }
-        val messsage = "Hey " + controller.username + "!\nPlease wait for the lobby-master to start " +
+        val nameOfTexture = "load"
+        loadingAnimation = Animation(nameOfTexture, numberOfFrames, refreshInterval)
+        val message = "Hey " + controller.username + "!\nPlease wait for the lobby-master to start " +
             "the game.\nWe made a spinning circle you can enjoy while you wait."
-        val label = Label(messsage, Label.LabelStyle(BitmapFont(Gdx.files.internal("chunkfive.fnt")), Color.FIREBRICK))
+        val label = Label(message, Label.LabelStyle(BitmapFont(Gdx.files.internal("chunkfive.fnt")), Color.FIREBRICK))
         label.setFontScale(FONT_SIZE_WELCOME_TEXT)
         val labelWidth = Gdx.graphics.width * 0.8f
         label.width = labelWidth
@@ -81,36 +73,28 @@ class LobbyScreen(val controller: StroopedController) : Screen {
 
     override fun render(delta: Float) {
         handleInput()
-        elapsedTime += Gdx.graphics.deltaTime
         batch.projectionMatrix = cam.combined
         batch.begin()
         batch.draw(
             background,
-            backPosX,
-            backPosY,
+            backgroundPosition.x,
+            backgroundPosition.y,
             Gdx.graphics.width.toFloat(),
             Gdx.graphics.height.toFloat()
         )
         batch.draw(
-            exitBtn,
-            exitBtnPosX,
-            exitBtnPosY,
-            TextureSizes.exitGameButtonWidth(),
-            TextureSizes.exitGameButtonHeight()
+            exitButton,
+            exitButtonPosition.x,
+            exitButtonPosition.y,
+            TextureSizes.exitGameButton.width,
+            TextureSizes.exitGameButton.height
         )
-        if (elapsedTime > refreshInterval) {
-            iterat++
-            elapsedTime = 0f
-            if (iterat == numberOfFrames) {
-                iterat = 0
-            }
-        }
         batch.draw(
-            loadAnim[iterat],
-            loadPosX,
-            loadPosY,
-            TextureSizes.loadWidth(),
-            TextureSizes.loadHeight())
+            loadingAnimation.getTexture(Gdx.graphics.deltaTime),
+            loadSpinnerPosition.x,
+            loadSpinnerPosition.y,
+            TextureSizes.loadSpinner.width,
+            TextureSizes.loadSpinner.height)
         batch.end()
         ui.draw()
     }
@@ -131,10 +115,10 @@ class LobbyScreen(val controller: StroopedController) : Screen {
     private fun handleInput() {
         if (Gdx.input.justTouched()) {
             val rec = Rectangle(
-                exitBtnPosX,
-                exitBtnPosY,
-                TextureSizes.exitGameButtonWidth(),
-                TextureSizes.exitGameButtonHeight())
+                exitButtonPosition.x,
+                exitButtonPosition.y,
+                TextureSizes.exitGameButton.width,
+                TextureSizes.exitGameButton.height)
             val touchX = Gdx.input.x.toFloat()
             val touchY = cam.viewportHeight - Gdx.input.y
             if (rec.contains(Vector2(touchX, touchY))) {
