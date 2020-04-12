@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import no.strooped.TextureSizes
@@ -24,15 +26,25 @@ private fun buildStyles(): TextButton.TextButtonStyle {
     myStyle.up = skin.getDrawable(nameOfSkin)
     return myStyle
 }
-
-class UIButton(label: String, textToBeDisplayed: String, position: Vector2, size: Size) : Button(label, buildStyles()) {
-    init{
-        super.setText(textToBeDisplayed)
-        super.getLabel().setWrap(true)
-        super.setPosition(position.x, position.y)
-        super.setSize(size.width, size.height)
+class UIButton(
+    label: String,
+    textToBeDisplayed: String,
+    position: Vector2,
+    size: Size
+) : TextButton(label, buildStyles()) {
+    init {
+        setText(textToBeDisplayed)
+        getLabel().setWrap(true)
+        setPosition(position.x, position.y)
+        setSize(size.width, size.height)
     }
-    /*fun onClick {
 
-    }*/
+    fun onClick(callback: (InputEvent) -> Unit) {
+        addListener(object : InputListener() {
+            override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                callback(event)
+                return super.touchDown(event, x, y, pointer, button)
+            }
+        })
+    }
 }

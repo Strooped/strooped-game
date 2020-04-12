@@ -25,7 +25,7 @@ import no.strooped.view.screen.components.UIButton
 private val FONT_SIZE_WELCOME_TEXT = TextureSizes.getScaledFontSize(3.0f)
 class LobbyScreen(private val controller: StroopedController) : Screen {
     private var ui: Stage = Stage(ScreenViewport())
-    private var batch: SpriteBatch
+    private lateinit var batch: SpriteBatch
     private val cam: OrthographicCamera = OrthographicCamera()
     private val backgroundPosition = Vector2(cam.position.x - cam.viewportWidth * 0.5f, 0f)
     private val exitButtonPosition = Vector2(
@@ -43,11 +43,29 @@ class LobbyScreen(private val controller: StroopedController) : Screen {
         exitButtonPosition,
         TextureSizes.exitGameButton
     )
-    private val loadingAnimation: Animation
+    private lateinit var loadingAnimation: Animation
 
     private val numberOfFrames = 4
     private val refreshInterval = 0.1f
     init {
+        print("Stuff")
+        // this init will disappear in future versions
+            /*Label label = new Label(labelText, skin);
+Pixmap labelColor = new Pixmap(labelWidth, labelHeight, Pixmap.Format.RGB888);
+labelColor.setColor(<your-color-goes-here>);
+labelColor.fill();
+label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*/
+        //TO DO for later
+        /*val toastFactory: Toast.ToastFactory = Builder()
+            .font(attr.font)
+            .build()*/
+        // https://github.com/wentsa/Toast-LibGDX - for toasts
+    }
+
+    override fun hide() {}
+
+    override fun show() {
+        batch = SpriteBatch()
         cam.setToOrtho(false, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         batch = SpriteBatch()
         val nameOfTexture = "load"
@@ -67,25 +85,9 @@ class LobbyScreen(private val controller: StroopedController) : Screen {
         ui.addActor(label)
         ui.addActor(exitButton)
         Gdx.input.inputProcessor = ui
-
-
-            /*Label label = new Label(labelText, skin);
-Pixmap labelColor = new Pixmap(labelWidth, labelHeight, Pixmap.Format.RGB888);
-labelColor.setColor(<your-color-goes-here>);
-labelColor.fill();
-label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*/
-
-        //TO DO for later
-        /*val toastFactory: Toast.ToastFactory = Builder()
-            .font(attr.font)
-            .build()*/
-        // https://github.com/wentsa/Toast-LibGDX - for toasts
-    }
-
-    override fun hide() {}
-
-    override fun show() {
-        batch = SpriteBatch()
+        exitButton.onClick {
+            controller.exitLobby()
+        }
     }
 
     override fun render(delta: Float) {
@@ -123,8 +125,6 @@ label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*
     }
 
     private fun handleInput() {
-        if (exitButton.isPressed) {
-            controller.exitLobby()
-        }
+
     }
 }

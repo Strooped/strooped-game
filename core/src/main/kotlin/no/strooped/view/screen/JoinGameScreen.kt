@@ -32,14 +32,6 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
     )
     private val usernamePosition = Vector2(Gdx.graphics.width * 0.15f, Gdx.graphics.height * 0.5f)
     private val pinPosition = Vector2(Gdx.graphics.width * 0.15f, Gdx.graphics.height * 0.38f)
-    private val usernameLabelPosition = Vector2(
-        usernamePosition.x + (TextureSizes.inputBox.width - TextureSizes.usernameLabel.width) * 0.5f,
-        usernamePosition.y + TextureSizes.inputBox.height * 1.2f
-    )
-    private val pinLabelPosition = Vector2(
-        pinPosition.x + (TextureSizes.inputBox.width - TextureSizes.pinLabel.width) * 0.5f,
-        pinPosition.y + TextureSizes.inputBox.height * 1.2f
-    )
     private val background: Texture = Texture("white.jpg")
     private val logo: Texture = Texture("Strooped1.png")
     private val joinButton: UIButton = UIButton(
@@ -48,8 +40,6 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
         joinButtonPosition,
         TextureSizes.joinButton
     )
-    private val userLabel: Texture = Texture("Username1.png")
-    private val pinLabel: Texture = Texture("Pin.png")
     private lateinit var username: TextFieldInput
     private lateinit var pin: TextFieldInput
     override fun hide() {}
@@ -59,20 +49,27 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
         cam.setToOrtho(false, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
 
         username = TextFieldInput(
-            "username",
+            "Username",
             usernamePosition,
             TextureSizes.inputBox
         )
         ui.addActor(username)
+        ui.addActor(username.label)
 
         pin = TextFieldInput(
-            "pin",
+            "Pin",
             pinPosition,
             TextureSizes.inputBox
         )
         ui.addActor(pin)
+        ui.addActor(pin.label)
+
         ui.addActor(joinButton)
         Gdx.input.inputProcessor = ui
+
+        joinButton.onClick {
+            controller.connectToGame(username = username.text, joinPin = pin.text)
+        }
     }
 
     override fun render(delta: Float) {
@@ -93,20 +90,6 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
             TextureSizes.logo.width,
             TextureSizes.logo.height
         )
-        batch.draw(
-            userLabel,
-            usernameLabelPosition.x,
-            usernameLabelPosition.y,
-            TextureSizes.usernameLabel.width,
-            TextureSizes.usernameLabel.height
-        )
-        batch.draw(
-            pinLabel,
-            pinLabelPosition.x,
-            pinLabelPosition.y,
-            TextureSizes.pinLabel.width,
-            TextureSizes.pinLabel.height
-        )
         batch.end()
         ui.draw()
     }
@@ -125,8 +108,6 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
     }
 
     private fun handleInput() {
-        if (joinButton.isPressed) {
-            controller.connectToGame(username = username.text, joinPin = pin.text)
-        }
+
     }
 }

@@ -34,27 +34,23 @@ private fun buildTextFieldStyle(): TextField.TextFieldStyle {
 }
 
 private fun buildLabelStyle(): Label.LabelStyle {
-    val nameOfSkin = "background"
-    val inputBoxBackgroundSize = 10
-    val patch = NinePatch(
-        Texture("white.jpg"),
-        inputBoxBackgroundSize,
-        inputBoxBackgroundSize,
-        inputBoxBackgroundSize,
-        inputBoxBackgroundSize
-    )
     val myStyle = Label.LabelStyle()
     val fontSizeInputField = TextureSizes.getScaledFontSize(2.0f)
     myStyle.font = BitmapFont(Gdx.files.internal("chunkfive.fnt"))
-    myStyle.fontColor = Color.BLACK
+    myStyle.fontColor = Color.FIREBRICK
     myStyle.font.data.setScale(fontSizeInputField)
     return myStyle
 }
 
-class TextFieldInput(val nameOfField: String, position: Vector2, size: Size) : TextField("", buildTextFieldStyle()) {
+class TextFieldInput(nameOfField: String, position: Vector2, size: Size) : TextField("", buildTextFieldStyle()) {
     var label: Label = Label(nameOfField, buildLabelStyle())
     init {
         super.setPosition(position.x, position.y)
         super.setSize(size.width, size.height)
+        val labelPosition = Vector2(
+            position.x + (TextureSizes.inputBox.width - label.width) * 0.5f,
+            position.y + TextureSizes.inputBox.height
+        )
+        label.setPosition(labelPosition.x, labelPosition.y)
     }
 }
