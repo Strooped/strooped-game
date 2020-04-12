@@ -34,7 +34,8 @@ object TextureSizes {
         Gdx.graphics.height * (100f / testedScreen.height)
     )
 
-    fun adjustedFontSize(font: Float): Float {
+    fun getScaledFontSize(font: Float): Float {
         return (Gdx.graphics.width + Gdx.graphics.height) * font / (testedScreen.width + testedScreen.height)
     }
+    // add comments that clarify the class
 }

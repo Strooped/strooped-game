@@ -6,12 +6,13 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import no.strooped.TextureSizes
 import no.strooped.util.Size
 
-private fun buildStyles(): TextField.TextFieldStyle {
+private fun buildTextFieldStyle(): TextField.TextFieldStyle {
     val nameOfSkin = "background"
     val inputBoxBackgroundSize = 10
     val patch = NinePatch(
@@ -23,7 +24,7 @@ private fun buildStyles(): TextField.TextFieldStyle {
     )
     val skin = Skin()
     val myStyle = TextField.TextFieldStyle()
-    val fontSizeInputField = TextureSizes.adjustedFontSize(2.0f)
+    val fontSizeInputField = TextureSizes.getScaledFontSize(2.0f)
     skin.add(nameOfSkin, patch)
     myStyle.font = BitmapFont(Gdx.files.internal("chunkfive.fnt"))
     myStyle.fontColor = Color.BLACK
@@ -32,7 +33,26 @@ private fun buildStyles(): TextField.TextFieldStyle {
     return myStyle
 }
 
-class TextFieldInput(val nameOfField: String, position: Vector2, size: Size) : TextField("", buildStyles()) {
+private fun buildLabelStyle(): Label.LabelStyle {
+    val nameOfSkin = "background"
+    val inputBoxBackgroundSize = 10
+    val patch = NinePatch(
+        Texture("white.jpg"),
+        inputBoxBackgroundSize,
+        inputBoxBackgroundSize,
+        inputBoxBackgroundSize,
+        inputBoxBackgroundSize
+    )
+    val myStyle = Label.LabelStyle()
+    val fontSizeInputField = TextureSizes.getScaledFontSize(2.0f)
+    myStyle.font = BitmapFont(Gdx.files.internal("chunkfive.fnt"))
+    myStyle.fontColor = Color.BLACK
+    myStyle.font.data.setScale(fontSizeInputField)
+    return myStyle
+}
+
+class TextFieldInput(val nameOfField: String, position: Vector2, size: Size) : TextField("", buildTextFieldStyle()) {
+    var label: Label = Label(nameOfField, buildLabelStyle())
     init {
         super.setPosition(position.x, position.y)
         super.setSize(size.width, size.height)

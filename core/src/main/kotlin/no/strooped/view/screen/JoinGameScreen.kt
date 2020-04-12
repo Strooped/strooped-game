@@ -5,13 +5,13 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import no.strooped.StroopedController
 import no.strooped.TextureSizes
 import no.strooped.view.screen.components.TextFieldInput
+import no.strooped.view.screen.components.UIButton
 
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
@@ -20,15 +20,7 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
 
     var ui: Stage = Stage(ScreenViewport())
     lateinit var batch: SpriteBatch
-
     private val cam: OrthographicCamera = OrthographicCamera()
-    private val background: Texture = Texture("white.jpg")
-    private val logo: Texture = Texture("Strooped1.png")
-    private val joinButton: Texture = Texture("join_game_button.png")
-    private val userLabel: Texture = Texture("Username1.png")
-    private val pinLabel: Texture = Texture("Pin.png")
-    private val username: TextFieldInput
-    private val pin: TextFieldInput
     private val backgroundPosition = Vector2(cam.position.x - cam.viewportWidth * 0.5f, 0f)
     private val logoPosition = Vector2(
         (Gdx.graphics.width.toFloat() - TextureSizes.logo.width) * 0.5f,
@@ -48,8 +40,22 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
         pinPosition.x + (TextureSizes.inputBox.width - TextureSizes.pinLabel.width) * 0.5f,
         pinPosition.y + TextureSizes.inputBox.height * 1.2f
     )
+    private val background: Texture = Texture("white.jpg")
+    private val logo: Texture = Texture("Strooped1.png")
+    private val joinButton: UIButton = UIButton(
+        "joinGameButton",
+        "Join game",
+        joinButtonPosition,
+        TextureSizes.joinButton
+    )
+    private val userLabel: Texture = Texture("Username1.png")
+    private val pinLabel: Texture = Texture("Pin.png")
+    private lateinit var username: TextFieldInput
+    private lateinit var pin: TextFieldInput
+    override fun hide() {}
 
-    init {
+    override fun show() {
+        batch = SpriteBatch()
         cam.setToOrtho(false, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
 
         username = TextFieldInput(
@@ -65,13 +71,8 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
             TextureSizes.inputBox
         )
         ui.addActor(pin)
+        ui.addActor(joinButton)
         Gdx.input.inputProcessor = ui
-    }
-
-    override fun hide() {}
-
-    override fun show() {
-        batch = SpriteBatch()
     }
 
     override fun render(delta: Float) {
@@ -91,13 +92,6 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
             logoPosition.y,
             TextureSizes.logo.width,
             TextureSizes.logo.height
-        )
-        batch.draw(
-            joinButton,
-            joinButtonPosition.x,
-            joinButtonPosition.y,
-            TextureSizes.joinButton.width,
-            TextureSizes.joinButton.height
         )
         batch.draw(
             userLabel,
@@ -131,19 +125,8 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
     }
 
     private fun handleInput() {
-        if (Gdx.input.justTouched()) {
-            val rec = Rectangle(
-                joinButtonPosition.x,
-                joinButtonPosition.y,
-                TextureSizes.joinButton.width,
-                TextureSizes.joinButton.height)
-            val touchX = Gdx.input.x.toFloat()
-            val touchY = cam.viewportHeight - Gdx.input.y
-            if (rec.contains(Vector2(touchX, touchY))) {
-                println("Touch")
-                // gsm.set(PlayState(gsm))
-                controller.connectToGame(username = username.text, joinPin = pin.text)
-            }
+        if (joinButton.isPressed) {
+            controller.connectToGame(username = username.text, joinPin = pin.text)
         }
     }
 }
