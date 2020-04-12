@@ -73,7 +73,6 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
     }
 
     override fun render(delta: Float) {
-        handleInput()
         batch.projectionMatrix = cam.combined
         batch.begin()
         batch.draw(
@@ -105,9 +104,5 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
     override fun dispose() {
         ui.dispose()
         batch.dispose()
-    }
-
-    private fun handleInput() {
-
     }
 }

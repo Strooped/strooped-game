@@ -7,23 +7,26 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import no.strooped.GameSingleton
 import no.strooped.StroopedController
 import no.strooped.TextureSizes
+import no.strooped.model.GameRoom
 import no.strooped.view.screen.components.Animation
 import no.strooped.view.screen.components.UIButton
+import java.lang.RuntimeException
 
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
 private val FONT_SIZE_WELCOME_TEXT = TextureSizes.getScaledFontSize(3.0f)
-class LobbyScreen(private val controller: StroopedController) : Screen {
+class LobbyScreen(
+    private val controller: StroopedController,
+    private val gameRoom: GameRoom
+) : Screen {
     private var ui: Stage = Stage(ScreenViewport())
     private lateinit var batch: SpriteBatch
     private val cam: OrthographicCamera = OrthographicCamera()
@@ -55,7 +58,7 @@ Pixmap labelColor = new Pixmap(labelWidth, labelHeight, Pixmap.Format.RGB888);
 labelColor.setColor(<your-color-goes-here>);
 labelColor.fill();
 label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*/
-        //TO DO for later
+        // TO DO for later
         /*val toastFactory: Toast.ToastFactory = Builder()
             .font(attr.font)
             .build()*/
@@ -70,8 +73,7 @@ label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*
         batch = SpriteBatch()
         val nameOfTexture = "load"
         loadingAnimation = Animation(nameOfTexture, numberOfFrames, refreshInterval)
-        val playerUsername = GameSingleton.room?.player?.username ?: throw Exception("No username provided")
-        val message = "Hey " + playerUsername + "!\nPlease wait for the lobby-master to start " +
+        val message = "Hey " + gameRoom.player.username + "!\nPlease wait for the lobby-master to start " +
             "the game.\nWe made a spinning circle you can enjoy while you wait."
         val label = Label(message, Label.LabelStyle(BitmapFont(Gdx.files.internal("chunkfive.fnt")), Color.FIREBRICK))
         label.setFontScale(FONT_SIZE_WELCOME_TEXT)
@@ -91,7 +93,6 @@ label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*
     }
 
     override fun render(delta: Float) {
-        handleInput()
         batch.projectionMatrix = cam.combined
         batch.begin()
         batch.draw(
@@ -122,9 +123,5 @@ label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*
     override fun dispose() {
         ui.dispose()
         batch.dispose()
-    }
-
-    private fun handleInput() {
-
     }
 }

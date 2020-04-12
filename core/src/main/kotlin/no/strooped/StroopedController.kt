@@ -3,9 +3,6 @@ package no.strooped
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.utils.ObjectMap
-import no.strooped.model.GameRoom
-import no.strooped.model.Player
-import no.strooped.model.Task
 import no.strooped.service.GameLifecycleService
 import no.strooped.service.JoinGameService
 import no.strooped.view.screen.JoinGameScreen
@@ -49,9 +46,10 @@ class StroopedController : Game() {
     fun connectToGame(username: String, joinPin: String) {
         // Call JoinGameService to connect
         // ...
-        GameSingleton.room = joinGameService.joinGame(username, joinPin)
+        val room = joinGameService.joinGame(username, joinPin)
+        GameSingleton.room = room
         // success
-        changeScreen(LobbyScreen(this))
+        changeScreen(LobbyScreen(this, room))
     }
 
     fun exitLobby() {
