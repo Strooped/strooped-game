@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import no.strooped.StroopedController
 import no.strooped.TextureSizes
@@ -19,9 +20,7 @@ import no.strooped.view.screen.components.UIButton
 class JoinGameScreen(private val controller: StroopedController) : Screen {
 
     var ui: Stage = Stage(ScreenViewport())
-    lateinit var batch: SpriteBatch
-    private val cam: OrthographicCamera = OrthographicCamera()
-    private val backgroundPosition = Vector2(cam.position.x - cam.viewportWidth * 0.5f, 0f)
+    private val backgroundPosition = Vector2(0f, 0f)
     private val logoPosition = Vector2(
         (Gdx.graphics.width.toFloat() - TextureSizes.logo.width) * 0.5f,
         Gdx.graphics.height.toFloat() * 0.75f - TextureSizes.logo.height * 0.5f
@@ -32,8 +31,8 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
     )
     private val usernamePosition = Vector2(Gdx.graphics.width * 0.15f, Gdx.graphics.height * 0.5f)
     private val pinPosition = Vector2(Gdx.graphics.width * 0.15f, Gdx.graphics.height * 0.38f)
-    private val background: Texture = Texture("white.jpg")
-    private val logo: Texture = Texture("Strooped1.png")
+    private val background: Image = Image(Texture("white.jpg"))
+    private val logo: Image = Image(Texture("Strooped1.png"))
     private val joinButton: UIButton = UIButton(
         "joinGameButton",
         "Join game",
@@ -45,9 +44,13 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
     override fun hide() {}
 
     override fun show() {
-        batch = SpriteBatch()
-        cam.setToOrtho(false, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+        background.setPosition(backgroundPosition.x, backgroundPosition.y)
+        background.setSize(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+        ui.addActor(background)
 
+        logo.setPosition(logoPosition.x, logoPosition.y)
+        logo.setSize(TextureSizes.logo.width, TextureSizes.logo.height)
+        ui.addActor(logo)
         username = TextFieldInput(
             "Username",
             usernamePosition,
@@ -73,23 +76,6 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
     }
 
     override fun render(delta: Float) {
-        batch.projectionMatrix = cam.combined
-        batch.begin()
-        batch.draw(
-            background,
-            backgroundPosition.x,
-            backgroundPosition.y,
-            Gdx.graphics.width.toFloat(),
-            Gdx.graphics.height.toFloat()
-        )
-        batch.draw(
-            logo,
-            logoPosition.x,
-            logoPosition.y,
-            TextureSizes.logo.width,
-            TextureSizes.logo.height
-        )
-        batch.end()
         ui.draw()
     }
 
@@ -103,6 +89,5 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
 
     override fun dispose() {
         ui.dispose()
-        batch.dispose()
     }
 }

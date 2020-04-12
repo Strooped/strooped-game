@@ -9,15 +9,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import no.strooped.GameSingleton
 import no.strooped.StroopedController
 import no.strooped.TextureSizes
 import no.strooped.model.GameRoom
 import no.strooped.view.screen.components.Animation
 import no.strooped.view.screen.components.UIButton
-import java.lang.RuntimeException
 
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
@@ -30,7 +29,7 @@ class LobbyScreen(
     private var ui: Stage = Stage(ScreenViewport())
     private lateinit var batch: SpriteBatch
     private val cam: OrthographicCamera = OrthographicCamera()
-    private val backgroundPosition = Vector2(cam.position.x - cam.viewportWidth * 0.5f, 0f)
+    private val backgroundPosition = Vector2(0f, 0f)
     private val exitButtonPosition = Vector2(
         (Gdx.graphics.width.toFloat() - TextureSizes.exitGameButton.width) * 0.5f,
         Gdx.graphics.height.toFloat() * 0.1f
@@ -39,7 +38,7 @@ class LobbyScreen(
         (Gdx.graphics.width.toFloat() - TextureSizes.loadSpinner.width) * 0.5f,
         (Gdx.graphics.height.toFloat() - TextureSizes.loadSpinner.height) * 0.35f
     )
-    private val background: Texture = Texture("white.jpg")
+    private val background: Image = Image(Texture("white.jpg"))
     private val exitButton: UIButton = UIButton(
         "exitGameButton",
         "Exit game",
@@ -71,6 +70,9 @@ label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*
         batch = SpriteBatch()
         cam.setToOrtho(false, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         batch = SpriteBatch()
+        background.setPosition(backgroundPosition.x, backgroundPosition.y)
+        background.setSize(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+        ui.addActor(background)
         val nameOfTexture = "load"
         loadingAnimation = Animation(nameOfTexture, numberOfFrames, refreshInterval)
         val message = "Hey " + gameRoom.player.username + "!\nPlease wait for the lobby-master to start " +
@@ -94,14 +96,8 @@ label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*
 
     override fun render(delta: Float) {
         batch.projectionMatrix = cam.combined
+        ui.draw()
         batch.begin()
-        batch.draw(
-            background,
-            backgroundPosition.x,
-            backgroundPosition.y,
-            Gdx.graphics.width.toFloat(),
-            Gdx.graphics.height.toFloat()
-        )
         batch.draw(
             loadingAnimation.getTexture(Gdx.graphics.deltaTime),
             loadSpinnerPosition.x,
@@ -109,7 +105,6 @@ label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*
             TextureSizes.loadSpinner.width,
             TextureSizes.loadSpinner.height)
         batch.end()
-        ui.draw()
     }
 
     override fun pause() {}
