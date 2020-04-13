@@ -81,9 +81,11 @@ label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*
         label.setFontScale(FONT_SIZE_WELCOME_TEXT)
         val labelWidth = Gdx.graphics.width * 0.8f
         label.width = labelWidth
-        val labelPosX = (Gdx.graphics.width - label.width) * 0.5f
-        val labelPosY = Gdx.graphics.height * 0.7f
-        label.setPosition(labelPosX, labelPosY)
+        val labelPosition = Vector2(
+            (Gdx.graphics.width - label.width) * 0.5f,
+            Gdx.graphics.height * 0.7f
+        )
+        label.setPosition(labelPosition.x, labelPosition.y)
         label.setWrap(true) // fit inside the label
         label.setAlignment(1) // center the text
         ui.addActor(label)
