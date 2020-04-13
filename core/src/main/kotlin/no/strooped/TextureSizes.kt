@@ -1,25 +1,41 @@
 package no.strooped
 
 import com.badlogic.gdx.Gdx
-@Suppress("MagicNumber")
+import no.strooped.util.Size
+
 object TextureSizes {
-        // logo on JoinGameScreen
-        fun logoWidth(): Float = 2 * Gdx.graphics.width * (543f / 1080f)
-        fun logoHeight(): Float = 2 * Gdx.graphics.height * (158f / 2040f)
+    val testedScreen = Size(1080f, 2040f)
+    val logo = Size(
+        2 * Gdx.graphics.width * (543f / testedScreen.width),
+        2 * Gdx.graphics.height * (158f / testedScreen.height)
+    )
+    val joinButton = Size(
+        Gdx.graphics.width * (387f / testedScreen.width),
+        Gdx.graphics.height * (100f / testedScreen.height)
+    )
+    val inputBox = Size(
+        Gdx.graphics.width * 0.7f,
+        Gdx.graphics.height * 0.05f
+    )
+    val usernameLabel = Size(
+        Gdx.graphics.width * (321f / testedScreen.width),
+        Gdx.graphics.height * (62f / testedScreen.height)
+    )
+    val pinLabel = Size(
+        Gdx.graphics.width * (115f / testedScreen.width),
+        Gdx.graphics.height * (64f / testedScreen.height)
+    )
+    val loadSpinner = Size(
+        Gdx.graphics.width * (130f / testedScreen.width),
+        Gdx.graphics.height * (130f / testedScreen.height)
+    )
+    val exitGameButton = Size(
+        Gdx.graphics.width * (376f / testedScreen.width),
+        Gdx.graphics.height * (100f / testedScreen.height)
+    )
 
-        // joinGameButton on JoinGameScreen
-        fun joinGameButtonWidth(): Float = Gdx.graphics.width * (387f / 1080f)
-        fun joinGameButtonHeight(): Float = Gdx.graphics.height * (100f / 2040f)
-
-        // inputBox on JoinGameScreen
-        fun inputBoxWidth(): Float = Gdx.graphics.width * 0.7f
-        fun inputBoxHeight(): Float = Gdx.graphics.height * 0.05f
-
-        // usernameLabel on JoinGameScreen
-        fun userLabelWidth(): Float = Gdx.graphics.width * (321f / 1080f)
-        fun userLabelHeight(): Float = Gdx.graphics.height * (62f / 2040f)
-
-        // pinLabel on JoinGameScreen
-        fun pinLabelWidth(): Float = Gdx.graphics.width * (115f / 1080f)
-        fun pinLabelHeight(): Float = Gdx.graphics.height * (64f / 2040f)
+    fun getScaledFontSize(font: Float): Float {
+        return (Gdx.graphics.width + Gdx.graphics.height) * font / (testedScreen.width + testedScreen.height)
+    }
+    // add comments that clarify the class
 }
