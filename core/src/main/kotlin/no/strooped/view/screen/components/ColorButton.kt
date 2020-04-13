@@ -14,7 +14,6 @@ private fun buildStyles(color: String): TextButton.TextButtonStyle {
     val buttonColor = Pixmap(50, 50, Pixmap.Format.RGB888)
     buttonColor.setColor(Colors.get(color))
     buttonColor.fill()
-
     myStyle.font = BitmapFont()
     myStyle.up = Image(Texture(buttonColor)).drawable
     return myStyle
