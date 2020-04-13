@@ -33,9 +33,12 @@ object TextureSizes {
         Gdx.graphics.width * (376f / testedScreen.width),
         Gdx.graphics.height * (100f / testedScreen.height)
     )
+    private const val numberOfColors = 4 // this should be automatically saved somewhere else
+    private val heightOfScreenForColors = Gdx.graphics.height * 0.7f
+    const val distanceBetweenButtons = 20f // might change it to be scalable
     val colorButton = Size(
-        50f,
-        50f
+        Gdx.graphics.width / 2f - 1.5f * distanceBetweenButtons,
+        heightOfScreenForColors / (numberOfColors / 2) - 1.5f * distanceBetweenButtons
     )
 
     fun getScaledFontSize(font: Float): Float {

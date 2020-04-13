@@ -56,7 +56,7 @@ class StroopedController : Game() {
         // success, do this usually, now for testing I invoke TaskScreen
         // screens.put(LobbyScreen::class.java, LobbyScreen(this, room))
         // changeScreen(LobbyScreen::class.java)
-        val task = Task("id1", "BLUE", listOf("RED", "GREEN", "YELLOW", "BLUE"))
+        val task = Task("1", "BLUE", listOf("RED", "GREEN", "YELLOW", "BLUE"))
         GameSingleton.room!!.currentTask = task
         screens.put(TaskScreen::class.java, TaskScreen(this, room))
         changeScreen(TaskScreen::class.java)
