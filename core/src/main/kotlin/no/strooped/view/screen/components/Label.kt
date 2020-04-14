@@ -10,8 +10,9 @@ class Label(
     message: String,
     position: Vector2,
     width: Float,
-    font: Float
-) : Label(message, LabelStyle(BitmapFont(Gdx.files.internal("chunkfive.fnt")), Color.FIREBRICK)) {
+    font: Float,
+    color: Color = Color.WHITE
+) : Label(message, LabelStyle(BitmapFont(Gdx.files.internal("applegothic.fnt")), color)) {
     init {
         setPosition(position.x, position.y)
         setWidth(width) // might need to move it from here

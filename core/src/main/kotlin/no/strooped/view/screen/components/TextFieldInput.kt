@@ -14,7 +14,7 @@ import no.strooped.util.Size
 
 private fun buildTextFieldStyle(): TextField.TextFieldStyle {
     val nameOfSkin = "background"
-    val inputBoxBackgroundSize = 10
+    val inputBoxBackgroundSize = 5
     val patch = NinePatch(
         Texture("white.jpg"),
         inputBoxBackgroundSize,
@@ -26,7 +26,7 @@ private fun buildTextFieldStyle(): TextField.TextFieldStyle {
     val myStyle = TextField.TextFieldStyle()
     val fontSizeInputField = TextureSizes.getScaledFontSize(2.0f)
     skin.add(nameOfSkin, patch)
-    myStyle.font = BitmapFont(Gdx.files.internal("chunkfive.fnt"))
+    myStyle.font = BitmapFont(Gdx.files.internal("applegothic.fnt"))
     myStyle.fontColor = Color.BLACK
     myStyle.font.data.setScale(fontSizeInputField)
     myStyle.background = skin.getDrawable(nameOfSkin)
@@ -36,8 +36,8 @@ private fun buildTextFieldStyle(): TextField.TextFieldStyle {
 private fun buildLabelStyle(): Label.LabelStyle {
     val myStyle = Label.LabelStyle()
     val fontSizeInputField = TextureSizes.getScaledFontSize(2.0f)
-    myStyle.font = BitmapFont(Gdx.files.internal("chunkfive.fnt"))
-    myStyle.fontColor = Color.FIREBRICK
+    myStyle.font = BitmapFont(Gdx.files.internal("applegothic.fnt"))
+    myStyle.fontColor = Color.WHITE
     myStyle.font.data.setScale(fontSizeInputField)
     return myStyle
 }

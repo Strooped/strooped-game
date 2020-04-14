@@ -21,16 +21,16 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
     private val backgroundPosition = Vector2(0f, 0f)
     private val logoPosition = Vector2(
         (Gdx.graphics.width.toFloat() - TextureSizes.logo.width) * 0.5f,
-        Gdx.graphics.height.toFloat() * 0.75f - TextureSizes.logo.height * 0.5f
+        Gdx.graphics.height.toFloat() * 0.85f - TextureSizes.logo.height * 0.5f
     )
     private val joinButtonPosition = Vector2(
         (Gdx.graphics.width.toFloat() - TextureSizes.joinButton.width) * 0.5f,
-        Gdx.graphics.height.toFloat() * 0.27f
+        Gdx.graphics.height.toFloat() * 0.20f
     )
-    private val usernamePosition = Vector2(Gdx.graphics.width * 0.15f, Gdx.graphics.height * 0.5f)
-    private val pinPosition = Vector2(Gdx.graphics.width * 0.15f, Gdx.graphics.height * 0.38f)
-    private val background: Image = Image(Texture("white.jpg"))
-    private val logo: Image = Image(Texture("Strooped1.png"))
+    private val usernamePosition = Vector2(Gdx.graphics.width * 0.15f, Gdx.graphics.height * 0.56f)
+    private val pinPosition = Vector2(Gdx.graphics.width * 0.15f, Gdx.graphics.height * 0.44f)
+    private val background: Image = Image(Texture("background.png"))
+    private val logo: Image = Image(Texture("logo.png"))
     private val joinButton: UIButton = UIButton(
         "joinGameButton",
         "Join game",
@@ -58,7 +58,7 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
         ui.addActor(username.label)
 
         pin = TextFieldInput(
-            "Pin",
+            "Game PIN",
             pinPosition,
             TextureSizes.inputBox
         )

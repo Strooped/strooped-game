@@ -13,12 +13,12 @@ import no.strooped.util.Size
 
 private fun buildStyle(): TextButton.TextButtonStyle {
     val nameOfSkin = "background"
-    val patch = NinePatch(Texture("buttonTexture.png"))
+    val patch = NinePatch(Texture("button.png"))
     val skin = Skin()
     val myStyle = TextButton.TextButtonStyle()
     val fontSizeInputField = TextureSizes.getScaledFontSize(2.0f)
     skin.add(nameOfSkin, patch)
-    myStyle.font = BitmapFont(Gdx.files.internal("chunkfive.fnt"))
+    myStyle.font = BitmapFont(Gdx.files.internal("applegothic.fnt"))
     myStyle.fontColor = Color.WHITE
     myStyle.font.data.setScale(fontSizeInputField)
     myStyle.up = skin.getDrawable(nameOfSkin)

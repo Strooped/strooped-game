@@ -3,13 +3,10 @@ package no.strooped
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.utils.ObjectMap
-import no.strooped.model.GameRoom
-import no.strooped.model.Task
 import no.strooped.service.GameLifecycleService
 import no.strooped.service.JoinGameService
 import no.strooped.view.screen.JoinGameScreen
 import no.strooped.view.screen.LobbyScreen
-import no.strooped.view.screen.TaskScreen
 
 const val TITLE = "Strooped"
 
@@ -23,8 +20,8 @@ class StroopedController : Game() {
         inititalizeServices()
         changeScreen(JoinGameScreen::class.java)
         gameLifecycleService.onNextTask {
-            //screens.put(TaskScreen::class.java, TaskScreen(this, GameSingleton.room!!))
-            //changeScreen(TaskScreen::class.java)
+            // screens.put(TaskScreen::class.java, TaskScreen(this, GameSingleton.room!!))
+            // changeScreen(TaskScreen::class.java)
             // add task to singleton
             // showNextTask(task)
         }
@@ -54,12 +51,19 @@ class StroopedController : Game() {
         val room = joinGameService.joinGame(username, joinPin)
         GameSingleton.room = room
         // success, do this usually, now for testing I invoke TaskScreen
-        // screens.put(LobbyScreen::class.java, LobbyScreen(this, room))
-        // changeScreen(LobbyScreen::class.java)
-        val task = Task("1", "BLUE", listOf("RED", "GREEN", "YELLOW", "BLUE"))
+        screens.put(LobbyScreen::class.java, LobbyScreen(this, room))
+        changeScreen(LobbyScreen::class.java)
+        /*val task = Task("1", "#FF0000", listOf(
+            "#FF0000", // red
+            "#33FF4F", // green
+            "#F3FF33", // yellow
+            "#337AFF", // blue
+            "#FF33E9", // pink
+            "#8633FF" // purple
+        ))
         GameSingleton.room!!.currentTask = task
         screens.put(TaskScreen::class.java, TaskScreen(this, room))
-        changeScreen(TaskScreen::class.java)
+        changeScreen(TaskScreen::class.java)*/
     }
 
     fun exitLobby() {

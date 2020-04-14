@@ -8,7 +8,7 @@ class Animation(
     private val refreshInterval: Float
 ) {
     private val textures: Array<Texture> = (0 until numberOfFrames).map {
-        Texture("$nameOfTexture$it.jpg")
+        Texture("$nameOfTexture-$it.png")
     }.toTypedArray()
     private var iterator = 0
     private var elapsedTime = 0f

@@ -19,7 +19,7 @@ import no.strooped.view.screen.components.UIButton
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
-private val FONT_SIZE_WELCOME_TEXT = TextureSizes.getScaledFontSize(3.0f)
+private val FONT_SIZE_WELCOME_TEXT = TextureSizes.getScaledFontSize(2.5f)
 class LobbyScreen(
     private val controller: StroopedController,
     private val gameRoom: GameRoom
@@ -36,16 +36,16 @@ class LobbyScreen(
         (Gdx.graphics.width.toFloat() - TextureSizes.loadSpinner.width) * 0.5f,
         (Gdx.graphics.height.toFloat() - TextureSizes.loadSpinner.height) * 0.35f
     )
-    private val background: Image = Image(Texture("white.jpg"))
+    private val background: Image = Image(Texture("background.png"))
     private val exitButton: UIButton = UIButton(
         "exitGameButton",
-        "Exit game",
+        "Leave game",
         exitButtonPosition,
         TextureSizes.exitGameButton
     )
     private lateinit var loadingAnimation: Animation
 
-    private val numberOfFrames = 4
+    private val numberOfFrames = 31
     private val refreshInterval = 0.1f
     init {
         print("Stuff")
@@ -65,11 +65,10 @@ class LobbyScreen(
         background.setPosition(backgroundPosition.x, backgroundPosition.y)
         background.setSize(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         ui.addActor(background)
-        val nameOfTexture = "load"
+        val nameOfTexture = "frame"
         loadingAnimation = Animation(nameOfTexture, numberOfFrames, refreshInterval)
-        val message = "Hey " + gameRoom.player.username + "!\nPlease wait for the lobby-master to start " +
-            "the game.\nWe made a spinning circle you can enjoy while you wait."
-        val labelWidth = Gdx.graphics.width * 0.8f
+        val message = "Waiting for game master to start the game"
+        val labelWidth = Gdx.graphics.width * 0.9f
         val labelPosition = Vector2(
             (Gdx.graphics.width - labelWidth) * 0.5f,
             Gdx.graphics.height * 0.7f
