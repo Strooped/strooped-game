@@ -2,6 +2,7 @@ package no.strooped.view.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -13,7 +14,6 @@ import no.strooped.TextureSizes
 import no.strooped.model.GameRoom
 import no.strooped.view.screen.components.ColorButton
 import no.strooped.view.screen.components.Label
-import no.strooped.view.screen.components.UIButton
 
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
@@ -25,17 +25,7 @@ class TaskScreen(
 ) : Screen {
     private var ui: Stage = Stage(ScreenViewport())
     private val backgroundPosition = Vector2(0f, 0f)
-    private val exitButtonPosition = Vector2(
-        (Gdx.graphics.width.toFloat() - TextureSizes.exitGameButton.width) * 0.5f,
-        Gdx.graphics.height.toFloat() * 0.8f
-    )
     private val background: Image = Image(Texture("white.jpg"))
-    private val exitButton: UIButton = UIButton(
-        "exitGameButton",
-        "Exit game",
-        exitButtonPosition,
-        TextureSizes.exitGameButton
-    )
     private var colorOptions: Array<ColorButton?> = arrayOfNulls(gameRoom.currentTask!!.possibleAnswers.size)
     init {
         print("Stuff")
@@ -62,12 +52,11 @@ label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*
         val labelWidth = Gdx.graphics.width * 0.8f
         val labelPosition = Vector2(
             (Gdx.graphics.width - labelWidth) * 0.5f,
-            Gdx.graphics.height * 0.9f
+            Gdx.graphics.height * 0.85f
         )
-        val label = Label(message, labelPosition, labelWidth, FONT_SIZE_LABEL_TEXT)
+        val label = Label(message, labelPosition, labelWidth, FONT_SIZE_LABEL_TEXT, Color.BLACK)
 
         ui.addActor(label)
-        ui.addActor(exitButton)
         val stringOfColors = GameSingleton.room!!.currentTask!!.possibleAnswers
         val colorPosition = Vector2(TextureSizes.distanceBetweenButtons, TextureSizes.distanceBetweenButtons)
         for (i in colorOptions.indices) {
@@ -80,10 +69,20 @@ label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*
                 colorPosition.x = TextureSizes.distanceBetweenButtons
             }
         }
-        Gdx.input.inputProcessor = ui
-        exitButton.onClick {
-            controller.exitLobby()
+        var colorClicked = false
+        for (i in colorOptions.indices) {
+            colorOptions[i]!!.onClick {
+                if (!colorClicked) {
+                    for (j in colorOptions.indices) {
+                        if (i != j) {
+                            colorOptions[j]!!.changeColor("#737373 ") // gray 87
+                        }
+                    }
+                    colorClicked = true
+                }
+            }
         }
+        Gdx.input.inputProcessor = ui
     }
 
     override fun render(delta: Float) {
