@@ -65,7 +65,7 @@ class LobbyScreen(
         background.setPosition(backgroundPosition.x, backgroundPosition.y)
         background.setSize(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         ui.addActor(background)
-        val nameOfTexture = "frame"
+        val nameOfTexture = "loadingFrames/frame"
         loadingAnimation = Animation(nameOfTexture, numberOfFrames, refreshInterval)
         val message = "Waiting for game master to start the game"
         val labelWidth = Gdx.graphics.width * 0.9f

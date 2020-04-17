@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import no.strooped.TextureSizes
 import no.strooped.util.Size
 
-fun getPixmapRoundedRectangle(width: Int, height: Int, radius: Int, color: Color): Pixmap? {
+private fun getPixmapRoundedRectangle(width: Int, height: Int, radius: Int, color: Color): Pixmap? {
     val pixmap = Pixmap(width, height, Pixmap.Format.RGBA8888)
     pixmap.setColor(color)
 

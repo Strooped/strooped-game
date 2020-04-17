@@ -12,6 +12,7 @@ import no.strooped.GameSingleton
 import no.strooped.StroopedController
 import no.strooped.TextureSizes
 import no.strooped.model.GameRoom
+import no.strooped.view.screen.components.Button
 import no.strooped.view.screen.components.ColorButton
 import no.strooped.view.screen.components.Label
 
@@ -30,11 +31,6 @@ class TaskScreen(
     init {
         print("Stuff")
         // this init will disappear in future versions
-        /*Label label = new Label(labelText, skin);
-Pixmap labelColor = new Pixmap(labelWidth, labelHeight, Pixmap.Format.RGB888);
-labelColor.setColor(<your-color-goes-here>);
-labelColor.fill();
-label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*/
         // TO DO for later
         /*val toastFactory: Toast.ToastFactory = Builder()
             .font(attr.font)
@@ -48,7 +44,7 @@ label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*
         background.setPosition(backgroundPosition.x, backgroundPosition.y)
         background.setSize(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         ui.addActor(background)
-        val message = "Task ${gameRoom.currentTask!!.id}"
+        val message = "Task ${GameSingleton.taskNumber}"
         val labelWidth = Gdx.graphics.width * 0.8f
         val labelPosition = Vector2(
             (Gdx.graphics.width - labelWidth) * 0.5f,
@@ -57,7 +53,7 @@ label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*
         val label = Label(message, labelPosition, labelWidth, FONT_SIZE_LABEL_TEXT, Color.BLACK)
 
         ui.addActor(label)
-        val stringOfColors = GameSingleton.room!!.currentTask!!.possibleAnswers
+        val stringOfColors = gameRoom.currentTask!!.possibleAnswers
         val colorPosition = Vector2(TextureSizes.distanceBetweenButtons, TextureSizes.distanceBetweenButtons)
         for (i in colorOptions.indices) {
             colorOptions[i] = ColorButton("", colorPosition, TextureSizes.colorButton, stringOfColors[i])
@@ -70,19 +66,23 @@ label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();*
             }
         }
         var colorClicked = false
-        for (i in colorOptions.indices) {
-            colorOptions[i]!!.onClick {
+        colorOptions.forEach { button ->
+            button!!.onClick {
                 if (!colorClicked) {
-                    for (j in colorOptions.indices) {
-                        if (i != j) {
-                            colorOptions[j]!!.changeColor("#737373 ") // gray 87
-                        }
-                    }
-                    colorClicked = true
+                    focusOnButton(button)
                 }
+                colorClicked = true
             }
         }
         Gdx.input.inputProcessor = ui
+    }
+
+    private fun focusOnButton(button: Button) {
+        val (otherColors, rest) = colorOptions.partition { it != null && it != button }
+
+        otherColors.forEach {
+            it!!.changeColor("#737373")
+        }
     }
 
     override fun render(delta: Float) {
