@@ -28,6 +28,7 @@ class TaskScreen(
     private val backgroundPosition = Vector2(0f, 0f)
     private val background: Image = Image(Texture("white.jpg"))
     private var colorOptions: Array<ColorButton?> = arrayOfNulls(gameRoom.currentTask!!.possibleAnswers.size)
+    private var colorClicked = false
     init {
         print("Stuff")
         // this init will disappear in future versions
@@ -65,7 +66,6 @@ class TaskScreen(
                 colorPosition.x = TextureSizes.distanceBetweenButtons
             }
         }
-        var colorClicked = false
         colorOptions.forEach { button ->
             button!!.onClick {
                 if (!colorClicked) {
@@ -78,10 +78,10 @@ class TaskScreen(
     }
 
     private fun focusOnButton(button: Button) {
-        val (otherColors, rest) = colorOptions.partition { it != null && it != button }
+        val otherColors = colorOptions.filter { it != button }.filterNotNull()
 
         otherColors.forEach {
-            it!!.changeColor("#737373")
+            it.changeColor("#737373")
         }
     }
 
