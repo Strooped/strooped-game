@@ -26,13 +26,13 @@ class SocketService {
                 listener?.invoke(socket)
             }
         }
-            listeners.forEach { (type, callback) ->
-                socket.on(type) {
-                    Gdx.app.postRunnable {
-                        callback(it[0] as JSONObject)
-                    }
+        listeners.forEach { (type, callback) ->
+            socket.on(type) {
+                Gdx.app.postRunnable {
+                    callback(it[0] as JSONObject)
                 }
             }
+        }
         socket.connect()
     }
     fun onEvent(type: String, callback: (JSONObject) -> Unit) {

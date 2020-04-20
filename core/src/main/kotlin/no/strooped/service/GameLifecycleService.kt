@@ -1,8 +1,9 @@
 package no.strooped.service
 
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import no.strooped.model.Task
-import org.json.JSONArray
-import org.json.JSONObject
 
 typealias TaskStartCallback = (Task) -> Unit
 
@@ -12,14 +13,10 @@ class GameLifecycleService(
     fun onNextTask(callback: TaskStartCallback) {
 
         socketService.onEvent("task:start") {
-            val taskJsonObject = it["task"] as JSONObject
-            val correctAnswer = taskJsonObject["correctAnswer"] as String
-            val possibleAnswersJsonArray = taskJsonObject["buttons"] as JSONArray
-            val possibleAnswers = arrayOfNulls<String>(possibleAnswersJsonArray.length())
-            for (i in 0 until possibleAnswersJsonArray.length()) {
-                possibleAnswers[i] = possibleAnswersJsonArray[i] as String
-            }
-            val task = Task(/*"1",*/ correctAnswer, possibleAnswers.toList())
+            val mapper = jacksonObjectMapper()
+            val taskJsonObject = it["task"].toString()
+            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            val task: Task = mapper.readValue(taskJsonObject)
             callback(task)
         }
     }

@@ -27,7 +27,7 @@ class TaskScreen(
     private var ui: Stage = Stage(ScreenViewport())
     private val backgroundPosition = Vector2(0f, 0f)
     private val background: Image = Image(Texture("white.jpg"))
-    private var colorOptions: Array<ColorButton?> = arrayOfNulls(currentTask.possibleAnswers.size)
+    private var colorOptions: Array<ColorButton?> = arrayOfNulls(currentTask.buttons.size)
     private var colorClicked = false
     init {
         // this init will disappear in future versions
@@ -53,7 +53,7 @@ class TaskScreen(
         val label = Label(message, labelPosition, labelWidth, FONT_SIZE_LABEL_TEXT, Color.BLACK)
 
         ui.addActor(label)
-        val stringOfColors = currentTask.possibleAnswers
+        val stringOfColors = currentTask.buttons
         val colorPosition = Vector2(TextureSizes.distanceBetweenButtons, TextureSizes.distanceBetweenButtons)
         for (i in colorOptions.indices) {
             colorOptions[i] = ColorButton("", colorPosition, TextureSizes.colorButton, stringOfColors[i])

@@ -10,7 +10,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.2'
+        classpath 'com.android.tools.build:gradle:3.6.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
@@ -81,6 +81,7 @@ project(":core") {
         api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
         implementation 'io.socket:socket.io-client:1.0.0'
         implementation 'io.socket:engine.io-client:1.0.0'
+        implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.10.2"
     }
 }
 
