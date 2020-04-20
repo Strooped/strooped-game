@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import no.strooped.GameSingleton
 import no.strooped.StroopedController
 import no.strooped.TextureSizes
-import no.strooped.model.GameRoom
+import no.strooped.model.Task
 import no.strooped.view.screen.components.Button
 import no.strooped.view.screen.components.ColorButton
 import no.strooped.view.screen.components.Label
@@ -22,15 +22,14 @@ import no.strooped.view.screen.components.Label
 private val FONT_SIZE_LABEL_TEXT = TextureSizes.getScaledFontSize(3.0f)
 class TaskScreen(
     private val controller: StroopedController,
-    private val gameRoom: GameRoom
+    private val currentTask: Task
 ) : Screen {
     private var ui: Stage = Stage(ScreenViewport())
     private val backgroundPosition = Vector2(0f, 0f)
     private val background: Image = Image(Texture("white.jpg"))
-    private var colorOptions: Array<ColorButton?> = arrayOfNulls(gameRoom.currentTask!!.possibleAnswers.size)
+    private var colorOptions: Array<ColorButton?> = arrayOfNulls(currentTask.possibleAnswers.size)
     private var colorClicked = false
     init {
-        print("Stuff")
         // this init will disappear in future versions
         // TO DO for later
         /*val toastFactory: Toast.ToastFactory = Builder()
@@ -54,7 +53,7 @@ class TaskScreen(
         val label = Label(message, labelPosition, labelWidth, FONT_SIZE_LABEL_TEXT, Color.BLACK)
 
         ui.addActor(label)
-        val stringOfColors = gameRoom.currentTask!!.possibleAnswers
+        val stringOfColors = currentTask.possibleAnswers
         val colorPosition = Vector2(TextureSizes.distanceBetweenButtons, TextureSizes.distanceBetweenButtons)
         for (i in colorOptions.indices) {
             colorOptions[i] = ColorButton("", colorPosition, TextureSizes.colorButton, stringOfColors[i])

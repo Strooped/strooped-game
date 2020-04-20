@@ -33,7 +33,7 @@ object TextureSizes {
         Gdx.graphics.width * (650f / testedScreen.width),
         Gdx.graphics.height * (133f / testedScreen.height)
     )
-    private const val numberOfColors = 6 // this should be automatically saved somewhere else
+    private const val numberOfColors = 4 // this should be automatically saved somewhere else
     private val heightOfScreenForColors = Gdx.graphics.height * 0.7f
     const val distanceBetweenButtons = 20f // might change it to be scalable
     val colorButton = Size(

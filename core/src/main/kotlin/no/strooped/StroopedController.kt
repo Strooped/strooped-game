@@ -5,28 +5,29 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.utils.ObjectMap
 import no.strooped.service.GameLifecycleService
 import no.strooped.service.JoinGameService
+import no.strooped.service.SocketService
 import no.strooped.view.screen.JoinGameScreen
 import no.strooped.view.screen.LobbyScreen
+import no.strooped.view.screen.TaskScreen
 
 const val TITLE = "Strooped"
 
 class StroopedController : Game() {
     private val screens: ObjectMap<Class<out Screen>, Screen> = ObjectMap()
-    var joinGameService: JoinGameService = JoinGameService(socketService = Any())
-    var gameLifecycleService: GameLifecycleService = GameLifecycleService()
+    var socket: SocketService = SocketService()
+    var joinGameService: JoinGameService = JoinGameService(socket)
+    var gameLifecycleService: GameLifecycleService = GameLifecycleService(socket)
 
     override fun create() {
         loadScreens()
         inititalizeServices()
         changeScreen(JoinGameScreen::class.java)
         gameLifecycleService.onNextTask {
-            // screens.put(TaskScreen::class.java, TaskScreen(this, GameSingleton.room!!))
-            // changeScreen(TaskScreen::class.java)
+            GameSingleton.taskNumber++
+            screens.put(TaskScreen::class.java, TaskScreen(this, it))
+            changeScreen(TaskScreen::class.java)
             // add task to singleton
             // showNextTask(task)
-        }
-        gameLifecycleService.onTaskTimeout {
-            // disable answering
         }
         gameLifecycleService.onRoundEnd {
             // show round scoreboard
@@ -48,11 +49,12 @@ class StroopedController : Game() {
     fun connectToGame(username: String, joinPin: String) {
         // Call JoinGameService to connect
         // ...
-        val room = joinGameService.joinGame(username, joinPin)
-        GameSingleton.room = room
+        joinGameService.joinGame(username, joinPin) {
+            GameSingleton.room = it
+            screens.put(LobbyScreen::class.java, LobbyScreen(this, it))
+            changeScreen(LobbyScreen::class.java)
+        }
         // success, do this usually, now for testing I invoke TaskScreen
-        screens.put(LobbyScreen::class.java, LobbyScreen(this, room))
-        changeScreen(LobbyScreen::class.java)
         /*val task = Task("1", "#FF0000", listOf(
             "#FF0000", // red
             "#33FF4F", // green
@@ -82,6 +84,6 @@ class StroopedController : Game() {
     }
 
     private fun inititalizeServices() {
-        val joinGameService = JoinGameService(Object())
+        val joinGameService = JoinGameService(socket)
     }
 }

@@ -34,12 +34,12 @@ private fun getPixmapRoundedRectangle(width: Int, height: Int, radius: Int, colo
     return pixmap
 }
 
-private fun buildStyles(color: String): TextButton.TextButtonStyle {
+private fun buildStyles(color: String?): TextButton.TextButtonStyle {
     val myStyle = TextButton.TextButtonStyle()
     val buttonPixmap = getPixmapRoundedRectangle(
         TextureSizes.colorButton.width.toInt(),
         TextureSizes.colorButton.height.toInt(),
-        90,
+        30,
         Color.valueOf(color)
     )
     myStyle.font = BitmapFont()
@@ -51,7 +51,7 @@ class ColorButton(
     label: String,
     position: Vector2,
     size: Size,
-    color: String
+    color: String?
 ) : Button(label, buildStyles(color)) {
     init {
         setPosition(position.x, position.y)
