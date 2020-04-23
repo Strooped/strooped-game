@@ -25,10 +25,16 @@ class TaskScreen(
     private val currentTask: Task
 ) : Screen {
     private var ui: Stage = Stage(ScreenViewport())
-    private val backgroundPosition = Vector2(0f, 0f)
     private val background: Image = Image(Texture("white.jpg"))
     private var colorOptions: Array<ColorButton?> = arrayOfNulls(currentTask.buttons.size)
     private var colorClicked = false
+    private val message = "Task ${GameSingleton.taskNumber}"
+    private val labelWidth = Gdx.graphics.width * 0.8f
+    private val backgroundPosition = Vector2(0f, 0f)
+    private val labelPosition = Vector2(
+        (Gdx.graphics.width - labelWidth) * 0.5f,
+        Gdx.graphics.height * 0.85f
+    )
     init {
         // this init will disappear in future versions
         // TO DO for later
@@ -44,14 +50,7 @@ class TaskScreen(
         background.setPosition(backgroundPosition.x, backgroundPosition.y)
         background.setSize(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         ui.addActor(background)
-        val message = "Task ${GameSingleton.taskNumber}"
-        val labelWidth = Gdx.graphics.width * 0.8f
-        val labelPosition = Vector2(
-            (Gdx.graphics.width - labelWidth) * 0.5f,
-            Gdx.graphics.height * 0.85f
-        )
         val label = Label(message, labelPosition, labelWidth, FONT_SIZE_LABEL_TEXT, Color.BLACK)
-
         ui.addActor(label)
         val stringOfColors = currentTask.buttons
         val colorPosition = Vector2(TextureSizes.distanceBetweenButtons, TextureSizes.distanceBetweenButtons)
@@ -69,6 +68,7 @@ class TaskScreen(
             button!!.onClick {
                 if (!colorClicked) {
                     focusOnButton(button)
+                    controller.answerTask(button)
                 }
                 colorClicked = true
             }

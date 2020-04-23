@@ -60,4 +60,7 @@ class ColorButton(
     fun changeColor(color: String) {
         setColor(Color.valueOf(color))
     }
+    fun getStringColor(): String {
+        return color.toString()
+    }
 }

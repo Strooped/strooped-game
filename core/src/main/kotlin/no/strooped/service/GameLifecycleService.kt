@@ -20,6 +20,9 @@ class GameLifecycleService(
             callback(task)
         }
     }
+    fun sendAnswer(task: Task, answer: String) {
+    // sendAnswer to socket
+    }
 fun onRoundEnd(callback: TaskStartCallback) {
 // socketService.on("round:end") {
 //
@@ -32,7 +35,5 @@ fun onGameEnd(callback: TaskStartCallback) {
 //    callback(...)
 // }
 }
-fun sendAnswer(task: Task, answer: String) {
-// sendAnswer to socket
-}
+
 }
