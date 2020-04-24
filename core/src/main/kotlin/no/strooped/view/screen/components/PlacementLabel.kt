@@ -5,17 +5,26 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import no.strooped.util.pluralize
 
 class PlacementLabel(
-    val placement: Int,
+    private val placement: Int = Int.MAX_VALUE,
     position: Vector2,
     width: Float,
     font: Float
 ) : Label("", LabelStyle(BitmapFont(Gdx.files.internal("applegothic.fnt")), Color.WHITE)) {
     init {
-        var textToDisplay = placement.toString()
+        color = getCorrectColor()
+        setText(placement.pluralize())
+        setPosition(position.x, position.y)
+        setWidth(width) // might need to move it from here
+        setFontScale(font)
+        setWrap(true) // fit inside the label
+        setAlignment(1) // center the text
+    }
+    private fun getCorrectColor(): Color {
         @Suppress("MagicNumber") run {
-            color = when (placement) {
+            return when (placement) {
                 1 -> Color.GOLD
                 2 -> Color.LIGHT_GRAY
                 3 -> Color.BROWN
@@ -23,25 +32,7 @@ class PlacementLabel(
                     Color.RED
                 }
             }
-            textToDisplay += if (placement > 10 && ((placement % 10) in (1..3)) && ((placement / 10) % 10 == 1)) {
-                "th"
-            } else if (placement % 10 == 1) {
-                "st"
-            } else if (placement % 10 == 2) {
-                "nd"
-            } else if (placement % 10 == 3) {
-                "rd"
-            } else {
-                "th"
-            }
         }
-        textToDisplay += " place"
-        setText(textToDisplay)
-        setPosition(position.x, position.y)
-        setWidth(width) // might need to move it from here
-        setFontScale(font)
-        setWrap(true) // fit inside the label
-        setAlignment(1) // center the text
     }
     fun supportMessage(): String {
         @Suppress("MagicNumber")

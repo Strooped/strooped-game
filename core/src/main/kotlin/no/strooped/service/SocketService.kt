@@ -17,9 +17,7 @@ class SocketService {
         onTaskListener = callback
     }
     fun connect(joinPin: String) {
-        val opts = IO.Options()
-        opts.query = "token=$joinPin"
-        val socket = IO.socket("https://strooped-api.lokalvert.tech", opts)
+        val socket = IO.socket("https://strooped-api.lokalvert.tech", createIOOptions(joinPin))
         socketInstance = socket
         socket.on(Socket.EVENT_CONNECT) {
             Gdx.app.postRunnable {
@@ -37,5 +35,10 @@ class SocketService {
     }
     fun onEvent(type: String, callback: (JSONObject) -> Unit) {
         listeners[type] = callback
+    }
+    private fun createIOOptions(joinPin: String): IO.Options {
+        val opts = IO.Options()
+        opts.query = "token=$joinPin"
+        return opts
     }
 }

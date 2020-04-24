@@ -23,8 +23,9 @@ class StroopedController : Game() {
     override fun create() {
         loadScreens()
         inititalizeServices()
-        screens.put(EndRoundScreen::class.java, EndRoundScreen(this))
-        changeScreen(EndRoundScreen::class.java)
+        // screens.put(EndRoundScreen::class.java, EndRoundScreen(this))
+        // changeScreen(EndRoundScreen::class.java)
+        changeScreen(JoinGameScreen::class.java)
         gameLifecycleService.onNextTask {
             GameSingleton.taskNumber++
             screens.put(TaskScreen::class.java, TaskScreen(this, it))
@@ -33,8 +34,8 @@ class StroopedController : Game() {
             // showNextTask(task)
         }
         gameLifecycleService.onRoundEnd { // task is called round:ending..will receive a player object
-            GameSingleton.room?.player?.let {
-                it.placement = 1 // new placement
+            GameSingleton.room?.player?.apply {
+                placement = 1 // new placement
             }
             screens.put(EndRoundScreen::class.java, EndRoundScreen(this))
             changeScreen(EndRoundScreen::class.java)

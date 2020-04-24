@@ -21,6 +21,7 @@ class GameLifecycleService(
         }
     }
     fun sendAnswer(task: Task, answer: String) {
+        // it.emit("task:answer", "some text")
     // sendAnswer to socket
     }
 fun onRoundEnd(callback: TaskStartCallback) {

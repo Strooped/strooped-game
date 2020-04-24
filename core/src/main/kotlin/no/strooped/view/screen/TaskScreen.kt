@@ -54,13 +54,14 @@ class TaskScreen(
         ui.addActor(label)
         val stringOfColors = currentTask.buttons
         val colorPosition = Vector2(TextureSizes.distanceBetweenButtons, TextureSizes.distanceBetweenButtons)
+        val colorButtonSize = TextureSizes.getColorButtonSize(colorOptions.size)
         for (i in colorOptions.indices) {
-            colorOptions[i] = ColorButton("", colorPosition, TextureSizes.colorButton, stringOfColors[i])
+            colorOptions[i] = ColorButton("", colorPosition, colorButtonSize, stringOfColors[i])
             ui.addActor(colorOptions[i])
             if (i % 2 == 0) {
-                colorPosition.x += TextureSizes.colorButton.width + TextureSizes.distanceBetweenButtons
+                colorPosition.x += colorButtonSize.width + TextureSizes.distanceBetweenButtons
             } else {
-                colorPosition.y += TextureSizes.colorButton.height + TextureSizes.distanceBetweenButtons
+                colorPosition.y += colorButtonSize.height + TextureSizes.distanceBetweenButtons
                 colorPosition.x = TextureSizes.distanceBetweenButtons
             }
         }
