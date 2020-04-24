@@ -10,8 +10,9 @@ class JoinGameService(
     fun joinGame(username: String, joinPin: String, callback: (GameRoom) -> Unit) {
         socket.onConnect {
             callback(GameRoom(Player(username), joinPin))
+            println("Success")
         }
-        socket.connect(joinPin)
+        socket.connect(joinPin, username)
         println("Joining game... $username, $joinPin")
     }
 }

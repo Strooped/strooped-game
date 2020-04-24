@@ -25,6 +25,7 @@ class StroopedController : Game() {
         inititalizeServices()
         // screens.put(EndRoundScreen::class.java, EndRoundScreen(this))
         // changeScreen(EndRoundScreen::class.java)
+        screens.put(JoinGameScreen::class.java, JoinGameScreen(this))
         changeScreen(JoinGameScreen::class.java)
         gameLifecycleService.onNextTask {
             GameSingleton.taskNumber++
@@ -78,6 +79,6 @@ class StroopedController : Game() {
     }
 
     private fun inititalizeServices() {
-        // val joinGameService = JoinGameService(socket)
+        val joinGameService = JoinGameService(socket)
     }
 }

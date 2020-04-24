@@ -20,8 +20,13 @@ class GameLifecycleService(
             callback(task)
         }
     }
-    fun sendAnswer(task: Task, answer: String) {
+    fun sendAnswer(taskId: Task, answer: String) {
         // it.emit("task:answer", "some text")
+        /* {
+            "answer": "<hex-value of color>",
+            "taskId": <integer value of the task id>,
+            "timestamp": <unixepoch in UTC>
+        }*/
     // sendAnswer to socket
     }
 fun onRoundEnd(callback: TaskStartCallback) {
