@@ -2,7 +2,6 @@ package no.strooped
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Screen
-import com.badlogic.gdx.utils.ObjectMap
 import no.strooped.service.GameLifecycleService
 import no.strooped.service.JoinGameService
 import no.strooped.service.SocketService
