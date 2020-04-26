@@ -36,4 +36,7 @@ class UIButton(
         setPosition(position.x, position.y)
         setSize(size.width, size.height)
     }
+    fun changeFontSize(font: Float) {
+        style.font.data.setScale(TextureSizes.getScaledFontSize(font))
+    }
 }

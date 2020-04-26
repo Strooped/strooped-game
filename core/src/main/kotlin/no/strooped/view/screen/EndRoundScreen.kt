@@ -8,14 +8,17 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import no.strooped.GameSingleton
+import no.strooped.StroopedController
 import no.strooped.TextureSizes
 import no.strooped.view.screen.components.Label
 import no.strooped.view.screen.components.PlacementLabel
+import no.strooped.view.screen.components.UIButton
+
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
 private val FONT_SIZE_LABEL_TEXT = TextureSizes.getScaledFontSize(4.0f)
-class EndRoundScreen : Screen {
+class EndRoundScreen(private val controller: StroopedController) : Screen {
     var ui: Stage = Stage(ScreenViewport())
     private val background: Image = Image(Texture("background.png"))
     private val backgroundPosition = Vector2(0f, 0f)
@@ -31,6 +34,16 @@ class EndRoundScreen : Screen {
     private val supportPosition = Vector2(
         (Gdx.graphics.width - labelWidth) * 0.5f,
         Gdx.graphics.height * 0.2f
+    )
+    private val exitButtonPosition = Vector2(
+        Gdx.graphics.width.toFloat() * 0.99f - TextureSizes.joinButton.width * 0.5f,
+        Gdx.graphics.height.toFloat() * 0.93f
+    )
+    private val exitButton: UIButton = UIButton(
+        "joinGameButton",
+        "Exit game",
+        exitButtonPosition,
+        TextureSizes.smallExitButton
     )
     override fun hide() {}
 
@@ -51,6 +64,13 @@ class EndRoundScreen : Screen {
         ui.addActor(placementLabel)
         val supportLabel = Label(placementLabel.supportMessage(), supportPosition, labelWidth, FONT_SIZE_LABEL_TEXT)
         ui.addActor(supportLabel)
+        val fontSize = 1.7f
+        exitButton.changeFontSize(fontSize)
+        ui.addActor(exitButton)
+        Gdx.input.inputProcessor = ui
+        exitButton.onClick {
+            controller.openJoinScreen()
+        }
     }
 
     override fun render(delta: Float) {
