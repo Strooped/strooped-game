@@ -1,3 +1,5 @@
 package no.strooped.model
 
-data class Task(val id: Int, val correctAnswer: String, val buttons: List<String?>)
+import no.strooped.view.screen.components.ColorOption
+
+data class Task(val id: Int, val buttons: List<ColorOption>)
