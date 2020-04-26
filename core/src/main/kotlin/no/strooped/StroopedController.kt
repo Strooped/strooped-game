@@ -20,8 +20,7 @@ class StroopedController : Game() {
     private var gameLifecycleService: GameLifecycleService = GameLifecycleService(socket)
 
     override fun create() {
-        // openJoinScreen()
-        changeScreen(EndRoundScreen(this))
+        openJoinScreen()
         gameLifecycleService.onNextTask {
             GameSingleton.taskNumber++
             GameSingleton.room?.apply { currentTask = it }
