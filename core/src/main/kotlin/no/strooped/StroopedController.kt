@@ -31,7 +31,7 @@ class StroopedController : Game() {
             GameSingleton.room?.player?.apply {
                 placement = it
             }
-            changeScreen(EndRoundScreen())
+            changeScreen(EndRoundScreen(this))
         }
         gameLifecycleService.onGameEnd {
             GameSingleton.room?.player?.apply {
