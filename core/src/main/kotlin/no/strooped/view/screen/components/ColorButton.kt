@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import no.strooped.TextureSizes
 import no.strooped.util.Size
 
 private fun getPixmapRoundedRectangle(width: Int, height: Int, radius: Int, color: Color): Pixmap? {
@@ -34,12 +33,12 @@ private fun getPixmapRoundedRectangle(width: Int, height: Int, radius: Int, colo
     return pixmap
 }
 
-private fun buildStyles(color: String): TextButton.TextButtonStyle {
+private fun buildStyles(color: String?, size: Size): TextButton.TextButtonStyle {
     val myStyle = TextButton.TextButtonStyle()
     val buttonPixmap = getPixmapRoundedRectangle(
-        TextureSizes.colorButton.width.toInt(),
-        TextureSizes.colorButton.height.toInt(),
-        90,
+        size.width.toInt(),
+        size.height.toInt(),
+        30,
         Color.valueOf(color)
     )
     myStyle.font = BitmapFont()
@@ -51,13 +50,16 @@ class ColorButton(
     label: String,
     position: Vector2,
     size: Size,
-    color: String
-) : Button(label, buildStyles(color)) {
+    private val newColor: String?
+) : Button(label, buildStyles(newColor, size)) {
     init {
         setPosition(position.x, position.y)
         setSize(size.width, size.height)
     }
     fun changeColor(color: String) {
         setColor(Color.valueOf(color))
+    }
+    fun getStringColor(): String? {
+        return newColor
     }
 }

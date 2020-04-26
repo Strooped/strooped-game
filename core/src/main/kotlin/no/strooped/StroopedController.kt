@@ -5,83 +5,73 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.utils.ObjectMap
 import no.strooped.service.GameLifecycleService
 import no.strooped.service.JoinGameService
+import no.strooped.service.SocketService
+import no.strooped.view.screen.EndGameScreen
+import no.strooped.view.screen.EndRoundScreen
 import no.strooped.view.screen.JoinGameScreen
 import no.strooped.view.screen.LobbyScreen
+import no.strooped.view.screen.TaskScreen
+import no.strooped.view.screen.components.Answer
 
 const val TITLE = "Strooped"
 
 class StroopedController : Game() {
     private val screens: ObjectMap<Class<out Screen>, Screen> = ObjectMap()
-    var joinGameService: JoinGameService = JoinGameService(socketService = Any())
-    var gameLifecycleService: GameLifecycleService = GameLifecycleService()
+    private var socket: SocketService = SocketService()
+    private var joinGameService: JoinGameService = JoinGameService(socket)
+    private var gameLifecycleService: GameLifecycleService = GameLifecycleService(socket)
 
     override fun create() {
-        loadScreens()
-        inititalizeServices()
-        changeScreen(JoinGameScreen::class.java)
+        openJoinScreen()
         gameLifecycleService.onNextTask {
-            // screens.put(TaskScreen::class.java, TaskScreen(this, GameSingleton.room!!))
-            // changeScreen(TaskScreen::class.java)
-            // add task to singleton
-            // showNextTask(task)
-        }
-        gameLifecycleService.onTaskTimeout {
-            // disable answering
+            GameSingleton.taskNumber++
+            GameSingleton.room?.apply { currentTask = it }
+            screens.remove(TaskScreen::class.java)
+            screens.put(TaskScreen::class.java, TaskScreen(this, it))
+            changeScreen(TaskScreen::class.java)
         }
         gameLifecycleService.onRoundEnd {
-            // show round scoreboard
+            GameSingleton.room?.player?.apply {
+                placement = it // new placement
+            }
+            screens.put(EndRoundScreen::class.java, EndRoundScreen())
+            changeScreen(EndRoundScreen::class.java)
         }
         gameLifecycleService.onGameEnd {
-            // end game stuff
+            GameSingleton.room?.player?.apply {
+                placement = it // new placement
+            }
+            screens.put(EndGameScreen::class.java, EndGameScreen(this))
+            changeScreen(EndGameScreen::class.java)
         }
-    }
-
-    override fun dispose() {
-//        batch!!.dispose()
-    }
-
-    fun changeScreen(key: Class<out Screen>) {
-        setScreen(screens.get(key))
-//        handle(GameEvent("SCREEN_CHANGE").set("SCREEN", screens.get(key)))
     }
 
     fun connectToGame(username: String, joinPin: String) {
-        // Call JoinGameService to connect
-        // ...
-        val room = joinGameService.joinGame(username, joinPin)
-        GameSingleton.room = room
-        // success, do this usually, now for testing I invoke TaskScreen
-        screens.put(LobbyScreen::class.java, LobbyScreen(this, room))
-        changeScreen(LobbyScreen::class.java)
-        /*val task = Task("1", "#FF0000", listOf(
-            "#FF0000", // red
-            "#33FF4F", // green
-            "#F3FF33", // yellow
-            "#337AFF", // blue
-            "#FF33E9", // pink
-            "#8633FF" // purple
-        ))
-        GameSingleton.room!!.currentTask = task
-        screens.put(TaskScreen::class.java, TaskScreen(this, room))
-        changeScreen(TaskScreen::class.java)*/
+        joinGameService.joinGame(username, joinPin) {
+            GameSingleton.room = it
+            screens.put(LobbyScreen::class.java, LobbyScreen(this))
+            changeScreen(LobbyScreen::class.java)
+        }
     }
 
     fun exitLobby() {
         changeScreen(JoinGameScreen::class.java)
     }
-
-    fun answerTask(answer: String) {
-        GameSingleton.room?.currentTask?.let {
-            gameLifecycleService.sendAnswer(it, answer)
-        }
-        //
-    }
-
-    private fun loadScreens() {
+    fun openJoinScreen() {
+        screens.clear()
         screens.put(JoinGameScreen::class.java, JoinGameScreen(this))
+        changeScreen(JoinGameScreen::class.java)
     }
 
-    private fun inititalizeServices() {
-        val joinGameService = JoinGameService(Object())
+    fun answerTask(answer: Answer) {
+        GameSingleton.room?.currentTask?.apply {
+            gameLifecycleService.sendAnswer(answer)
+        }
     }
+
+    private fun changeScreen(key: Class<out Screen>) {
+        setScreen(screens.get(key))
+    }
+
+    override fun dispose() {}
 }

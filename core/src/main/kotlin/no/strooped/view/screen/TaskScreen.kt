@@ -11,7 +11,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import no.strooped.GameSingleton
 import no.strooped.StroopedController
 import no.strooped.TextureSizes
-import no.strooped.model.GameRoom
+import no.strooped.model.Task
+import no.strooped.view.screen.components.Answer
 import no.strooped.view.screen.components.Button
 import no.strooped.view.screen.components.ColorButton
 import no.strooped.view.screen.components.Label
@@ -22,22 +23,19 @@ import no.strooped.view.screen.components.Label
 private val FONT_SIZE_LABEL_TEXT = TextureSizes.getScaledFontSize(3.0f)
 class TaskScreen(
     private val controller: StroopedController,
-    private val gameRoom: GameRoom
+    private val currentTask: Task
 ) : Screen {
     private var ui: Stage = Stage(ScreenViewport())
-    private val backgroundPosition = Vector2(0f, 0f)
     private val background: Image = Image(Texture("white.jpg"))
-    private var colorOptions: Array<ColorButton?> = arrayOfNulls(gameRoom.currentTask!!.possibleAnswers.size)
+    private var colorOptions: Array<ColorButton?> = arrayOfNulls(currentTask.buttons.size)
     private var colorClicked = false
-    init {
-        print("Stuff")
-        // this init will disappear in future versions
-        // TO DO for later
-        /*val toastFactory: Toast.ToastFactory = Builder()
-            .font(attr.font)
-            .build()*/
-        // https://github.com/wentsa/Toast-LibGDX - for toasts
-    }
+    private val message = "Task ${GameSingleton.taskNumber}"
+    private val labelWidth = Gdx.graphics.width * 0.8f
+    private val backgroundPosition = Vector2(0f, 0f)
+    private val labelPosition = Vector2(
+        (Gdx.graphics.width - labelWidth) * 0.5f,
+        Gdx.graphics.height * 0.85f
+    )
 
     override fun hide() {}
 
@@ -45,24 +43,18 @@ class TaskScreen(
         background.setPosition(backgroundPosition.x, backgroundPosition.y)
         background.setSize(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         ui.addActor(background)
-        val message = "Task ${GameSingleton.taskNumber}"
-        val labelWidth = Gdx.graphics.width * 0.8f
-        val labelPosition = Vector2(
-            (Gdx.graphics.width - labelWidth) * 0.5f,
-            Gdx.graphics.height * 0.85f
-        )
         val label = Label(message, labelPosition, labelWidth, FONT_SIZE_LABEL_TEXT, Color.BLACK)
-
         ui.addActor(label)
-        val stringOfColors = gameRoom.currentTask!!.possibleAnswers
+        val stringOfColors = currentTask.buttons
         val colorPosition = Vector2(TextureSizes.distanceBetweenButtons, TextureSizes.distanceBetweenButtons)
+        val colorButtonSize = TextureSizes.getColorButtonSize(colorOptions.size)
         for (i in colorOptions.indices) {
-            colorOptions[i] = ColorButton("", colorPosition, TextureSizes.colorButton, stringOfColors[i])
+            colorOptions[i] = ColorButton("", colorPosition, colorButtonSize, stringOfColors[i])
             ui.addActor(colorOptions[i])
             if (i % 2 == 0) {
-                colorPosition.x += TextureSizes.colorButton.width + TextureSizes.distanceBetweenButtons
+                colorPosition.x += colorButtonSize.width + TextureSizes.distanceBetweenButtons
             } else {
-                colorPosition.y += TextureSizes.colorButton.height + TextureSizes.distanceBetweenButtons
+                colorPosition.y += colorButtonSize.height + TextureSizes.distanceBetweenButtons
                 colorPosition.x = TextureSizes.distanceBetweenButtons
             }
         }
@@ -70,6 +62,8 @@ class TaskScreen(
             button!!.onClick {
                 if (!colorClicked) {
                     focusOnButton(button)
+                    println(button.getStringColor())
+                    controller.answerTask(Answer(button.getStringColor(), System.currentTimeMillis()))
                 }
                 colorClicked = true
             }

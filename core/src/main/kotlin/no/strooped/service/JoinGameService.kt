@@ -4,11 +4,15 @@ import no.strooped.model.GameRoom
 import no.strooped.model.Player
 
 class JoinGameService(
-    val socketService: Any
+    private val socket: SocketService
 ) {
 
-    fun joinGame(username: String, joinPin: String): GameRoom {
+    fun joinGame(username: String, joinPin: String, callback: (GameRoom) -> Unit) {
+        socket.onConnect {
+            callback(GameRoom(Player(username), joinPin))
+            println("Success")
+        }
+        socket.connect(joinPin, username)
         println("Joining game... $username, $joinPin")
-        return GameRoom(Player(username), joinPin)
     }
 }

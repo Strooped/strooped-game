@@ -8,16 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import no.strooped.GameSingleton
-import no.strooped.StroopedController
 import no.strooped.TextureSizes
 import no.strooped.view.screen.components.Label
 import no.strooped.view.screen.components.PlacementLabel
-import no.strooped.view.screen.components.UIButton
 
 private val FONT_SIZE_LABEL_TEXT = TextureSizes.getScaledFontSize(4.0f)
-class EndGameScreen(
-    private val controller: StroopedController
-) : Screen {
+class EndRoundScreen : Screen {
     var ui: Stage = Stage(ScreenViewport())
     private val background: Image = Image(Texture("background.png"))
     private val backgroundPosition = Vector2(0f, 0f)
@@ -30,19 +26,9 @@ class EndGameScreen(
         (Gdx.graphics.width - labelWidth) * 0.5f,
         Gdx.graphics.height * 0.55f
     )
-    private val endPosition = Vector2(
+    private val supportPosition = Vector2(
         (Gdx.graphics.width - labelWidth) * 0.5f,
-        Gdx.graphics.height * 0.35f
-    )
-    private val joinButtonPosition = Vector2(
-        (Gdx.graphics.width.toFloat() - TextureSizes.joinButton.width) * 0.5f,
-        Gdx.graphics.height.toFloat() * 0.13f
-    )
-    private val joinButton: UIButton = UIButton(
-        "joinGameButton",
-        "Join a new game",
-        joinButtonPosition,
-        TextureSizes.joinButton
+        Gdx.graphics.height * 0.2f
     )
     override fun hide() {}
 
@@ -50,7 +36,7 @@ class EndGameScreen(
         background.setPosition(backgroundPosition.x, backgroundPosition.y)
         background.setSize(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         ui.addActor(background)
-        val message = "You have finished in"
+        val message = "You are currently in"
         val label = Label(message, labelPosition, labelWidth, FONT_SIZE_LABEL_TEXT)
         ui.addActor(label)
         val placement = GameSingleton.room?.player?.placement
@@ -61,14 +47,8 @@ class EndGameScreen(
             FONT_SIZE_LABEL_TEXT
         )
         ui.addActor(placementLabel)
-        val supportLabel = Label(placementLabel.endMessage(), endPosition, labelWidth, FONT_SIZE_LABEL_TEXT)
+        val supportLabel = Label(placementLabel.supportMessage(), supportPosition, labelWidth, FONT_SIZE_LABEL_TEXT)
         ui.addActor(supportLabel)
-        ui.addActor(joinButton)
-        Gdx.input.inputProcessor = ui
-        joinButton.onClick {
-            println("Click")
-            controller.openJoinScreen()
-        }
     }
 
     override fun render(delta: Float) {

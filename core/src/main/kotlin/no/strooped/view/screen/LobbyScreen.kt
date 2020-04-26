@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import no.strooped.StroopedController
 import no.strooped.TextureSizes
-import no.strooped.model.GameRoom
 import no.strooped.view.screen.components.Animation
 import no.strooped.view.screen.components.Label
 import no.strooped.view.screen.components.UIButton
@@ -20,10 +19,7 @@ import no.strooped.view.screen.components.UIButton
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
 private val FONT_SIZE_WELCOME_TEXT = TextureSizes.getScaledFontSize(2.5f)
-class LobbyScreen(
-    private val controller: StroopedController,
-    private val gameRoom: GameRoom
-) : Screen {
+class LobbyScreen(private val controller: StroopedController) : Screen {
     private var ui: Stage = Stage(ScreenViewport())
     private lateinit var batch: SpriteBatch
     private val cam: OrthographicCamera = OrthographicCamera()
