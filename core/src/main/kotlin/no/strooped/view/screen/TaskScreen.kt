@@ -26,7 +26,7 @@ class TaskScreen(
 ) : Screen {
     private var ui: Stage = Stage(ScreenViewport())
     private val background: Image = Image(Texture("white.jpg"))
-    private var colorOptions: Array<ColorButton?> = arrayOfNulls(currentTask.buttons.size)
+    private var buttons: Array<ColorButton?> = arrayOfNulls(currentTask.buttons.size)
     private var colorClicked = false
     private val message = "Task ${GameSingleton.taskNumber}"
     private val labelWidth = Gdx.graphics.width * 0.8f
@@ -44,25 +44,24 @@ class TaskScreen(
         ui.addActor(background)
         val label = Label(message, labelPosition, labelWidth, FONT_SIZE_LABEL_TEXT, Color.BLACK)
         ui.addActor(label)
-        val stringOfColors = currentTask.buttons
-        val colorPosition = Vector2(TextureSizes.distanceBetweenButtons, TextureSizes.distanceBetweenButtons)
-        val colorButtonSize = TextureSizes.getColorButtonSize(colorOptions.size)
-        for (i in colorOptions.indices) {
-            colorOptions[i] = ColorButton("", colorPosition, colorButtonSize, stringOfColors[i])
-            ui.addActor(colorOptions[i])
+        val colorOptions = currentTask.buttons
+        val buttonPosition = Vector2(TextureSizes.distanceBetweenButtons, TextureSizes.distanceBetweenButtons)
+        val buttonSize = TextureSizes.getColorButtonSize(buttons.size)
+        for (i in buttons.indices) {
+            buttons[i] = ColorButton(colorOptions[i], buttonPosition, buttonSize)
+            ui.addActor(buttons[i])
             if (i % 2 == 0) {
-                colorPosition.x += colorButtonSize.width + TextureSizes.distanceBetweenButtons
+                buttonPosition.x += buttonSize.width + TextureSizes.distanceBetweenButtons
             } else {
-                colorPosition.y += colorButtonSize.height + TextureSizes.distanceBetweenButtons
-                colorPosition.x = TextureSizes.distanceBetweenButtons
+                buttonPosition.y += buttonSize.height + TextureSizes.distanceBetweenButtons
+                buttonPosition.x = TextureSizes.distanceBetweenButtons
             }
         }
-        colorOptions.forEach { button ->
+        buttons.forEach { button ->
             button!!.onClick {
                 if (!colorClicked) {
                     focusOnButton(button)
-                    println(button.getStringColor())
-                    controller.answerTask(Answer(button.getStringColor(), System.currentTimeMillis()))
+                    controller.answerTask(Answer(button.getAnswer(), System.currentTimeMillis()))
                 }
                 colorClicked = true
             }
@@ -71,7 +70,7 @@ class TaskScreen(
     }
 
     private fun focusOnButton(button: Button) {
-        val otherColors = colorOptions.filter { it != button }.filterNotNull()
+        val otherColors = buttons.filter { it != button }.filterNotNull()
 
         otherColors.forEach {
             it.changeColor("#242424")

@@ -1,5 +1,6 @@
 package no.strooped.view.screen.components
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
@@ -7,7 +8,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import no.strooped.TextureSizes
 import no.strooped.util.Size
+private val FONT_SIZE = TextureSizes.getScaledFontSize(1.5f)
 
 private fun getPixmapRoundedRectangle(width: Int, height: Int, radius: Int, color: Color): Pixmap? {
     val pixmap = Pixmap(width, height, Pixmap.Format.RGBA8888)
@@ -33,7 +36,7 @@ private fun getPixmapRoundedRectangle(width: Int, height: Int, radius: Int, colo
     return pixmap
 }
 
-private fun buildStyles(color: String?, size: Size): TextButton.TextButtonStyle {
+private fun buildStyles(color: String?, fontColor: String, size: Size): TextButton.TextButtonStyle {
     val myStyle = TextButton.TextButtonStyle()
     val buttonPixmap = getPixmapRoundedRectangle(
         size.width.toInt(),
@@ -41,25 +44,27 @@ private fun buildStyles(color: String?, size: Size): TextButton.TextButtonStyle 
         30,
         Color.valueOf(color)
     )
-    myStyle.font = BitmapFont()
+    myStyle.font = BitmapFont(Gdx.files.internal("applegothic.fnt"))
+    myStyle.font.data.setScale(FONT_SIZE)
+    myStyle.fontColor = Color.valueOf(fontColor)
     myStyle.up = Image(Texture(buttonPixmap)).drawable
     return myStyle
 }
 
 class ColorButton(
-    label: String,
+    private val colorOption: ColorOption,
     position: Vector2,
-    size: Size,
-    private val newColor: String?
-) : Button(label, buildStyles(newColor, size)) {
+    size: Size
+) : Button(colorOption.name, buildStyles(colorOption.backgroundColor, colorOption.fontColor, size)) {
     init {
         setPosition(position.x, position.y)
         setSize(size.width, size.height)
+        setText(colorOption.name)
     }
     fun changeColor(color: String) {
         setColor(Color.valueOf(color))
     }
-    fun getStringColor(): String? {
-        return newColor
+    fun getAnswer(): String? {
+        return colorOption.color
     }
 }
