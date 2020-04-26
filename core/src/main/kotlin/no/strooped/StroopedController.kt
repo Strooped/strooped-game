@@ -8,9 +8,9 @@ import no.strooped.service.JoinGameService
 import no.strooped.service.SocketService
 import no.strooped.view.screen.EndGameScreen
 import no.strooped.view.screen.EndRoundScreen
+import no.strooped.view.screen.JoinGameScreen
 import no.strooped.view.screen.LobbyScreen
 import no.strooped.view.screen.TaskScreen
-import no.strooped.view.screen.JoinGameScreen
 import no.strooped.view.screen.components.Answer
 
 const val TITLE = "Strooped"
