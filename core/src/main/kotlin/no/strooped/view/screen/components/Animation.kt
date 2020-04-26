@@ -10,17 +10,17 @@ class Animation(
     private val textures: Array<Texture> = (0 until numberOfFrames).map {
         Texture("$nameOfTexture-$it.png")
     }.toTypedArray()
-    private var iterator = 0
+    private var currentFrame = 0
     private var elapsedTime = 0f
     fun getTexture(time: Float): Texture? {
         elapsedTime += time
         if (elapsedTime > refreshInterval) {
-            iterator++
+            currentFrame++
             elapsedTime = 0f
-            if (iterator == numberOfFrames) {
-                iterator = 0
+            if (currentFrame == numberOfFrames) {
+                currentFrame = 0
             }
         }
-        return textures[iterator]
+        return textures[currentFrame]
     }
 }

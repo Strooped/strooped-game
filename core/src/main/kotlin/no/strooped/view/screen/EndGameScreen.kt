@@ -66,7 +66,6 @@ class EndGameScreen(
         ui.addActor(joinButton)
         Gdx.input.inputProcessor = ui
         joinButton.onClick {
-            println("Click")
             controller.openJoinScreen()
         }
     }

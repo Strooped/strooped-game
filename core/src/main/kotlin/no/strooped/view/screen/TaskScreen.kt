@@ -17,9 +17,6 @@ import no.strooped.view.screen.components.Button
 import no.strooped.view.screen.components.ColorButton
 import no.strooped.view.screen.components.Label
 
-/**
- * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
- * */
 private val FONT_SIZE_LABEL_TEXT = TextureSizes.getScaledFontSize(3.0f)
 class TaskScreen(
     private val controller: StroopedController,

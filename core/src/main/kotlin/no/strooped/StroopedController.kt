@@ -31,9 +31,11 @@ class StroopedController : Game() {
             changeScreen(TaskScreen::class.java)
         }
         gameLifecycleService.onRoundEnd {
+            GameSingleton.taskNumber = 0
             GameSingleton.room?.player?.apply {
                 placement = it // new placement
             }
+            screens.remove(EndRoundScreen::class.java)
             screens.put(EndRoundScreen::class.java, EndRoundScreen())
             changeScreen(EndRoundScreen::class.java)
         }

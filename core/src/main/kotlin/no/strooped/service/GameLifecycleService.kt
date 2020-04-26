@@ -28,7 +28,6 @@ class GameLifecycleService(
     }
     fun onRoundEnd(callback: RoundEndCallback) {
         socketService.onEvent("round:ending") {
-            // TODO handle json
             print(it)
             val placement = it["placement"] as Int
             callback(placement)
@@ -36,7 +35,6 @@ class GameLifecycleService(
     }
     fun onGameEnd(callback: GameEndCallback) {
         socketService.onEvent("game:ending") {
-            // TODO handle json
             val placement = it["placement"] as Int
             callback(placement)
         }
