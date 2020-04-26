@@ -11,7 +11,9 @@ import no.strooped.GameSingleton
 import no.strooped.TextureSizes
 import no.strooped.view.screen.components.Label
 import no.strooped.view.screen.components.PlacementLabel
-
+/**
+ * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
+ * */
 private val FONT_SIZE_LABEL_TEXT = TextureSizes.getScaledFontSize(4.0f)
 class EndRoundScreen : Screen {
     var ui: Stage = Stage(ScreenViewport())

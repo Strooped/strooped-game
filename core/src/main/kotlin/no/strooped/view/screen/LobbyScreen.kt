@@ -14,7 +14,9 @@ import no.strooped.TextureSizes
 import no.strooped.view.screen.components.Animation
 import no.strooped.view.screen.components.Label
 import no.strooped.view.screen.components.UIButton
-
+/**
+ * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
+ * */
 private val FONT_SIZE_WELCOME_TEXT = TextureSizes.getScaledFontSize(2.5f)
 class LobbyScreen(private val controller: StroopedController) : Screen {
     private var ui: Stage = Stage(ScreenViewport())
@@ -71,7 +73,7 @@ class LobbyScreen(private val controller: StroopedController) : Screen {
         ui.addActor(exitButton)
         Gdx.input.inputProcessor = ui
         exitButton.onClick {
-            controller.exitLobby()
+            controller.openJoinScreen()
         }
     }
 
