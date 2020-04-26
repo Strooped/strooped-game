@@ -8,14 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import no.strooped.util.pluralize
 
 class PlacementLabel(
-    private val placement: Int = Int.MAX_VALUE,
+    private val placement: Int? = Int.MAX_VALUE,
     position: Vector2,
     width: Float,
     font: Float
 ) : Label("", LabelStyle(BitmapFont(Gdx.files.internal("applegothic.fnt")), Color.WHITE)) {
     init {
         color = getCorrectColor()
-        setText(placement.pluralize())
+        setText(placement?.pluralize())
         setPosition(position.x, position.y)
         setWidth(width) // might need to move it from here
         setFontScale(font)
@@ -40,6 +40,14 @@ class PlacementLabel(
             "Good job! Keep up the good work."
         } else {
             "You are falling behind! Step up your game."
+        }
+    }
+    fun endMessage(): String {
+        @Suppress("MagicNumber")
+        return if (placement in (1..3)) {
+            "Great work!"
+        } else {
+            "Better luck next time!"
         }
     }
 }

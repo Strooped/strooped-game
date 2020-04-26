@@ -8,13 +8,9 @@ import org.json.JSONObject
 class SocketService {
     private var socketInstance: Socket? = null
     var listener: ((Socket) -> Unit)? = null
-    var onTaskListener: ((Any) -> Unit)? = null
     var listeners: HashMap<String, ((JSONObject) -> Unit)> = HashMap()
     fun onConnect(callback: (Socket) -> Unit) {
         listener = callback
-    }
-    fun onTaskStart(callback: (Any) -> Unit) {
-        onTaskListener = callback
     }
     fun connect(joinPin: String, username: String) {
         val socket = IO.socket("https://strooped-api.lokalvert.tech", createIOOptions(joinPin, username))
@@ -23,6 +19,9 @@ class SocketService {
             Gdx.app.postRunnable {
                 listener?.invoke(socket)
             }
+        }
+        socket.on(Socket.EVENT_ERROR) {
+            println("Im failing")
         }
         listeners.forEach { (type, callback) ->
             socket.on(type) {
@@ -35,6 +34,9 @@ class SocketService {
     }
     fun onEvent(type: String, callback: (JSONObject) -> Unit) {
         listeners[type] = callback
+    }
+    fun sendAnswer(json: JSONObject) {
+        socketInstance?.emit("task:answer", json)
     }
     private fun createIOOptions(joinPin: String, username: String): IO.Options {
         val opts = IO.Options()

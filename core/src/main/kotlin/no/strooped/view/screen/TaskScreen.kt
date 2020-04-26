@@ -12,6 +12,7 @@ import no.strooped.GameSingleton
 import no.strooped.StroopedController
 import no.strooped.TextureSizes
 import no.strooped.model.Task
+import no.strooped.view.screen.components.Answer
 import no.strooped.view.screen.components.Button
 import no.strooped.view.screen.components.ColorButton
 import no.strooped.view.screen.components.Label
@@ -35,14 +36,6 @@ class TaskScreen(
         (Gdx.graphics.width - labelWidth) * 0.5f,
         Gdx.graphics.height * 0.85f
     )
-    init {
-        // this init will disappear in future versions
-        // TO DO for later
-        /*val toastFactory: Toast.ToastFactory = Builder()
-            .font(attr.font)
-            .build()*/
-        // https://github.com/wentsa/Toast-LibGDX - for toasts
-    }
 
     override fun hide() {}
 
@@ -69,7 +62,8 @@ class TaskScreen(
             button!!.onClick {
                 if (!colorClicked) {
                     focusOnButton(button)
-                    controller.answerTask(button)
+                    println(button.getStringColor())
+                    controller.answerTask(Answer(button.getStringColor(), System.currentTimeMillis()))
                 }
                 colorClicked = true
             }

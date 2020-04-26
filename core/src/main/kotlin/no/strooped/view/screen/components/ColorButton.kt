@@ -50,8 +50,8 @@ class ColorButton(
     label: String,
     position: Vector2,
     size: Size,
-    color: String?
-) : Button(label, buildStyles(color, size)) {
+    private val newColor: String?
+) : Button(label, buildStyles(newColor, size)) {
     init {
         setPosition(position.x, position.y)
         setSize(size.width, size.height)
@@ -59,7 +59,7 @@ class ColorButton(
     fun changeColor(color: String) {
         setColor(Color.valueOf(color))
     }
-    fun getStringColor(): String {
-        return color.toString()
+    fun getStringColor(): String? {
+        return newColor
     }
 }

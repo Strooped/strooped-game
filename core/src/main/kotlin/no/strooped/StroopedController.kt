@@ -6,60 +6,50 @@ import com.badlogic.gdx.utils.ObjectMap
 import no.strooped.service.GameLifecycleService
 import no.strooped.service.JoinGameService
 import no.strooped.service.SocketService
+import no.strooped.view.screen.EndGameScreen
 import no.strooped.view.screen.EndRoundScreen
-import no.strooped.view.screen.JoinGameScreen
 import no.strooped.view.screen.LobbyScreen
 import no.strooped.view.screen.TaskScreen
-import no.strooped.view.screen.components.ColorButton
+import no.strooped.view.screen.JoinGameScreen
+import no.strooped.view.screen.components.Answer
 
 const val TITLE = "Strooped"
 
 class StroopedController : Game() {
     private val screens: ObjectMap<Class<out Screen>, Screen> = ObjectMap()
-    var socket: SocketService = SocketService()
-    var joinGameService: JoinGameService = JoinGameService(socket)
-    var gameLifecycleService: GameLifecycleService = GameLifecycleService(socket)
+    private var socket: SocketService = SocketService()
+    private var joinGameService: JoinGameService = JoinGameService(socket)
+    private var gameLifecycleService: GameLifecycleService = GameLifecycleService(socket)
 
     override fun create() {
-        loadScreens()
-        inititalizeServices()
-        // screens.put(EndRoundScreen::class.java, EndRoundScreen(this))
-        // changeScreen(EndRoundScreen::class.java)
-        screens.put(JoinGameScreen::class.java, JoinGameScreen(this))
-        changeScreen(JoinGameScreen::class.java)
+        openJoinScreen()
         gameLifecycleService.onNextTask {
             GameSingleton.taskNumber++
+            GameSingleton.room?.apply { currentTask = it }
+            screens.remove(TaskScreen::class.java)
             screens.put(TaskScreen::class.java, TaskScreen(this, it))
             changeScreen(TaskScreen::class.java)
-            // add task to singleton
-            // showNextTask(task)
         }
-        gameLifecycleService.onRoundEnd { // task is called round:ending..will receive a player object
+        gameLifecycleService.onRoundEnd {
             GameSingleton.room?.player?.apply {
-                placement = 1 // new placement
+                placement = it // new placement
             }
-            screens.put(EndRoundScreen::class.java, EndRoundScreen(this))
+            screens.put(EndRoundScreen::class.java, EndRoundScreen())
             changeScreen(EndRoundScreen::class.java)
-            // show round scoreboard
         }
         gameLifecycleService.onGameEnd {
-            // end game stuff
+            GameSingleton.room?.player?.apply {
+                placement = it // new placement
+            }
+            screens.put(EndGameScreen::class.java, EndGameScreen(this))
+            changeScreen(EndGameScreen::class.java)
         }
-    }
-
-    override fun dispose() {
-    }
-
-    fun changeScreen(key: Class<out Screen>) {
-        setScreen(screens.get(key))
     }
 
     fun connectToGame(username: String, joinPin: String) {
-        // Call JoinGameService to connect
-        // ...
         joinGameService.joinGame(username, joinPin) {
             GameSingleton.room = it
-            screens.put(LobbyScreen::class.java, LobbyScreen(this, it))
+            screens.put(LobbyScreen::class.java, LobbyScreen(this))
             changeScreen(LobbyScreen::class.java)
         }
     }
@@ -67,18 +57,21 @@ class StroopedController : Game() {
     fun exitLobby() {
         changeScreen(JoinGameScreen::class.java)
     }
+    fun openJoinScreen() {
+        screens.clear()
+        screens.put(JoinGameScreen::class.java, JoinGameScreen(this))
+        changeScreen(JoinGameScreen::class.java)
+    }
 
-    fun answerTask(answer: ColorButton) {
-        GameSingleton.room?.currentTask?.let {
-            gameLifecycleService.sendAnswer(it, answer.getStringColor())
+    fun answerTask(answer: Answer) {
+        GameSingleton.room?.currentTask?.apply {
+            gameLifecycleService.sendAnswer(answer)
         }
     }
 
-    private fun loadScreens() {
-        screens.put(JoinGameScreen::class.java, JoinGameScreen(this))
+    private fun changeScreen(key: Class<out Screen>) {
+        setScreen(screens.get(key))
     }
 
-    private fun inititalizeServices() {
-        val joinGameService = JoinGameService(socket)
-    }
+    override fun dispose() {}
 }

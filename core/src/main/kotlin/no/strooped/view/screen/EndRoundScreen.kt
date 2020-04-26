@@ -7,13 +7,13 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import no.strooped.StroopedController
+import no.strooped.GameSingleton
 import no.strooped.TextureSizes
 import no.strooped.view.screen.components.Label
 import no.strooped.view.screen.components.PlacementLabel
 
 private val FONT_SIZE_LABEL_TEXT = TextureSizes.getScaledFontSize(4.0f)
-class EndRoundScreen(val controller: StroopedController) : Screen {
+class EndRoundScreen : Screen {
     var ui: Stage = Stage(ScreenViewport())
     private val background: Image = Image(Texture("background.png"))
     private val backgroundPosition = Vector2(0f, 0f)
@@ -24,7 +24,7 @@ class EndRoundScreen(val controller: StroopedController) : Screen {
     )
     private val placementPosition = Vector2(
         (Gdx.graphics.width - labelWidth) * 0.5f,
-        Gdx.graphics.height * 0.5f
+        Gdx.graphics.height * 0.55f
     )
     private val supportPosition = Vector2(
         (Gdx.graphics.width - labelWidth) * 0.5f,
@@ -39,7 +39,7 @@ class EndRoundScreen(val controller: StroopedController) : Screen {
         val message = "You are currently in"
         val label = Label(message, labelPosition, labelWidth, FONT_SIZE_LABEL_TEXT)
         ui.addActor(label)
-        val placement = 231
+        val placement = GameSingleton.room?.player?.placement
         val placementLabel = PlacementLabel(
             placement,
             placementPosition,

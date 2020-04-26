@@ -4,8 +4,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.strooped.model.Task
+import no.strooped.view.screen.components.Answer
 
 typealias TaskStartCallback = (Task) -> Unit
+typealias RoundEndCallback = (Int) -> Unit
+typealias GameEndCallback = (Int) -> Unit
 
 class GameLifecycleService(
     var socketService: SocketService
@@ -20,25 +23,22 @@ class GameLifecycleService(
             callback(task)
         }
     }
-    fun sendAnswer(taskId: Task, answer: String) {
-        // it.emit("task:answer", "some text")
-        /* {
-            "answer": "<hex-value of color>",
-            "taskId": <integer value of the task id>,
-            "timestamp": <unixepoch in UTC>
-        }*/
-    // sendAnswer to socket
+    fun sendAnswer(answer: Answer) {
+        socketService.sendAnswer(answer.toJson())
     }
-fun onRoundEnd(callback: TaskStartCallback) {
-// socketService.on("round:end") {
-//
-//    callback(...)
-// }
-}
-fun onGameEnd(callback: TaskStartCallback) {
-// socketService.on("game:end") {
-//
-//    callback(...)
-// }
+    fun onRoundEnd(callback: RoundEndCallback) {
+        socketService.onEvent("round:ending") {
+            // TODO handle json
+            print(it)
+            val placement = it["placement"] as Int
+            callback(placement)
+        }
+    }
+    fun onGameEnd(callback: GameEndCallback) {
+        socketService.onEvent("game:ending") {
+            // TODO handle json
+            val placement = it["placement"] as Int
+            callback(placement)
+        }
 }
 }
