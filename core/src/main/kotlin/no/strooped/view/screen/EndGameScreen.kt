@@ -13,7 +13,9 @@ import no.strooped.TextureSizes
 import no.strooped.view.screen.components.Label
 import no.strooped.view.screen.components.PlacementLabel
 import no.strooped.view.screen.components.UIButton
-
+/**
+ * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
+ * */
 private val FONT_SIZE_LABEL_TEXT = TextureSizes.getScaledFontSize(4.0f)
 class EndGameScreen(
     private val controller: StroopedController
@@ -66,7 +68,6 @@ class EndGameScreen(
         ui.addActor(joinButton)
         Gdx.input.inputProcessor = ui
         joinButton.onClick {
-            println("Click")
             controller.openJoinScreen()
         }
     }

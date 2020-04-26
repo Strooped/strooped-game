@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import no.strooped.util.pluralize
 
 class PlacementLabel(
-    private val placement: Int? = Int.MAX_VALUE,
+    private val placement: Int?,
     position: Vector2,
     width: Float,
     font: Float

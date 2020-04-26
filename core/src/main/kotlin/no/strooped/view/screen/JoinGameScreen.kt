@@ -11,7 +11,6 @@ import no.strooped.StroopedController
 import no.strooped.TextureSizes
 import no.strooped.view.screen.components.TextFieldInput
 import no.strooped.view.screen.components.UIButton
-
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
