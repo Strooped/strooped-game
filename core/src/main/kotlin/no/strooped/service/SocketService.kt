@@ -19,13 +19,15 @@ class SocketService {
         socketInstance = socket
         socket.on(Socket.EVENT_CONNECT) {
             Gdx.app.postRunnable {
+                // Socket is wrapped inside runCatching
+                // to ensure callback receives the data as Result<Socket>
+                // and not just Socket
                 listener?.invoke(runCatching { socket })
             }
         }
         socket.on(Socket.EVENT_ERROR) {
             val errorMessage = it[0].toString().trim()
-            println("Im failing")
-            println(errorMessage)
+            println("Failed to connect to socket: $errorMessage")
             Gdx.app.postRunnable {
                 listener?.invoke(runCatching { throw RuntimeException("Could not connect to socket: $errorMessage") })
             }
