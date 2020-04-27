@@ -19,7 +19,7 @@ class SocketService {
         socketInstance = socket
         socket.on(Socket.EVENT_CONNECT) {
             Gdx.app.postRunnable {
-                listener?.invoke(kotlin.runCatching { socket })
+                listener?.invoke(runCatching { socket })
             }
         }
         socket.on(Socket.EVENT_ERROR) {
