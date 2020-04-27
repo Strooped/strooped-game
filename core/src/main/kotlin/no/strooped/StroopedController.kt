@@ -56,6 +56,7 @@ class StroopedController : Game() {
         }
     }
     fun openJoinScreen() {
+        GameSingleton.taskNumber = 0
         changeScreen(JoinGameScreen(this))
     }
 
