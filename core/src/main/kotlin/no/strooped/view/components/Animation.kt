@@ -1,4 +1,4 @@
-package no.strooped.view.screen.components
+package no.strooped.view.components
 
 import com.badlogic.gdx.graphics.Texture
 

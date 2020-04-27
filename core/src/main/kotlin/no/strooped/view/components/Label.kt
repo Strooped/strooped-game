@@ -1,10 +1,11 @@
-package no.strooped.view.screen.components
+package no.strooped.view.components
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import no.strooped.singleton.TextureSizes
 
 class Label(
     message: String,
@@ -19,5 +20,8 @@ class Label(
         setFontScale(font)
         setWrap(true) // fit inside the label
         setAlignment(1) // center the text
+    }
+    fun changeFontSize(font: Float) {
+        style.font.data.setScale(TextureSizes.getScaledFontSize(font))
     }
 }

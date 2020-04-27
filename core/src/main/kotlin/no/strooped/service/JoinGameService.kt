@@ -7,9 +7,9 @@ class JoinGameService(
     private val socket: SocketService
 ) {
 
-    fun joinGame(username: String, joinPin: String, callback: (GameRoom) -> Unit) {
+    fun joinGame(username: String, joinPin: String, callback: (Result<GameRoom>) -> Unit) {
         socket.onConnect {
-            callback(GameRoom(Player(username), joinPin))
+            callback(it.map { GameRoom(Player(username), joinPin) })
         }
         socket.connect(joinPin, username)
     }

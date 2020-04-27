@@ -1,4 +1,4 @@
-package no.strooped
+package no.strooped.singleton
 
 import no.strooped.model.GameRoom
 

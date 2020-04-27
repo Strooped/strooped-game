@@ -3,8 +3,8 @@ package no.strooped.service
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import no.strooped.model.Answer
 import no.strooped.model.Task
-import no.strooped.view.screen.components.Answer
 
 typealias TaskStartCallback = (Task) -> Unit
 typealias RoundEndCallback = (Int) -> Unit

@@ -1,4 +1,4 @@
-package no.strooped
+package no.strooped.singleton
 
 import com.badlogic.gdx.Gdx
 import no.strooped.util.Size

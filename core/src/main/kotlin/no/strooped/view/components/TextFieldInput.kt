@@ -1,4 +1,4 @@
-package no.strooped.view.screen.components
+package no.strooped.view.components
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
-import no.strooped.TextureSizes
+import no.strooped.singleton.TextureSizes
 import no.strooped.util.Size
 
 private fun buildTextFieldStyle(): TextField.TextFieldStyle {

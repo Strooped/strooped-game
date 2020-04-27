@@ -8,13 +8,18 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import no.strooped.StroopedController
-import no.strooped.TextureSizes
-import no.strooped.view.screen.components.TextFieldInput
-import no.strooped.view.screen.components.UIButton
+import no.strooped.singleton.TextureSizes
+import no.strooped.view.components.Label
+import no.strooped.view.components.TextFieldInput
+import no.strooped.view.components.UIButton
+
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
-class JoinGameScreen(private val controller: StroopedController) : Screen {
+class JoinGameScreen(
+    private val controller: StroopedController,
+    private val errorMessage: String? = null
+) : Screen {
 
     var ui: Stage = Stage(ScreenViewport())
     private val backgroundPosition = Vector2(0f, 0f)
@@ -28,6 +33,10 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
     )
     private val usernamePosition = Vector2(Gdx.graphics.width * 0.15f, Gdx.graphics.height * 0.56f)
     private val pinPosition = Vector2(Gdx.graphics.width * 0.15f, Gdx.graphics.height * 0.44f)
+    private val errorPosition = Vector2(
+        Gdx.graphics.width * 0.05f,
+        joinButtonPosition.y - 2 * TextureSizes.joinButton.height
+    )
     private val background: Image = Image(Texture("background.png"))
     private val logo: Image = Image(Texture("logo.png"))
     private val joinButton: UIButton = UIButton(
@@ -69,6 +78,11 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
 
         joinButton.onClick {
             controller.connectToGame(username = username.text, joinPin = pin.text)
+        }
+
+        errorMessage?.let {
+            val errorMessage = Label(it, errorPosition, Gdx.graphics.width * 0.9f, TextureSizes.getScaledFontSize(2.0f))
+            ui.addActor(errorMessage)
         }
     }
 

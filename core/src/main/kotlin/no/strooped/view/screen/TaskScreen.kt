@@ -8,14 +8,14 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import no.strooped.GameSingleton
 import no.strooped.StroopedController
-import no.strooped.TextureSizes
+import no.strooped.model.Answer
 import no.strooped.model.Task
-import no.strooped.view.screen.components.Answer
-import no.strooped.view.screen.components.Button
-import no.strooped.view.screen.components.ColorButton
-import no.strooped.view.screen.components.Label
+import no.strooped.singleton.GameSingleton
+import no.strooped.singleton.TextureSizes
+import no.strooped.view.components.Button
+import no.strooped.view.components.ColorButton
+import no.strooped.view.components.Label
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
