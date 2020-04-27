@@ -10,7 +10,8 @@ import no.strooped.view.screen.EndRoundScreen
 import no.strooped.view.screen.JoinGameScreen
 import no.strooped.view.screen.LobbyScreen
 import no.strooped.view.screen.TaskScreen
-import no.strooped.view.screen.components.Answer
+import no.strooped.model.Answer
+import no.strooped.singleton.GameSingleton
 
 const val TITLE = "Strooped"
 
@@ -18,9 +19,6 @@ class StroopedController : Game() {
     private var socket: SocketService = SocketService()
     private var joinGameService: JoinGameService = JoinGameService(socket)
     private var gameLifecycleService: GameLifecycleService = GameLifecycleService(socket)
-
-    private val errorMessages: ArrayList<String> = ArrayList()
-
     override fun create() {
         openJoinScreen()
         gameLifecycleService.onNextTask {
@@ -52,8 +50,6 @@ class StroopedController : Game() {
                     changeScreen(LobbyScreen(this))
                 },
                 { err ->
-                    println("Failed to join game!: ${err.message}")
-                    // Re-render JoinGameScreen with error message
                     changeScreen(JoinGameScreen(this, err.localizedMessage))
                 }
             )

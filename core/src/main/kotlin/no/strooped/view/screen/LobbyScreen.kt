@@ -10,10 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import no.strooped.StroopedController
-import no.strooped.TextureSizes
-import no.strooped.view.screen.components.Animation
-import no.strooped.view.screen.components.Label
-import no.strooped.view.screen.components.UIButton
+import no.strooped.singleton.TextureSizes
+import no.strooped.view.components.Animation
+import no.strooped.view.components.Label
+import no.strooped.view.components.UIButton
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */

@@ -29,7 +29,12 @@ class SocketService {
             val errorMessage = it[0].toString().trim()
             println("Failed to connect to socket: $errorMessage")
             Gdx.app.postRunnable {
-                listener?.invoke(runCatching { throw RuntimeException("Could not connect to socket: $errorMessage") })
+                listener?.invoke(runCatching {
+                    when (errorMessage) {
+                        "Invalid joinToken" -> throw RuntimeException("Please enter a valid game PIN!")
+                        else -> throw RuntimeException("Could not connect to socket: $errorMessage")
+                    }
+                })
             }
         }
         listeners.forEach { (type, callback) ->

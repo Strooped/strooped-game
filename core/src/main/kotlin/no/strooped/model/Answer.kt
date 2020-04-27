@@ -1,4 +1,4 @@
-package no.strooped.view.screen.components
+package no.strooped.model
 
 import org.json.JSONObject
 
