@@ -19,6 +19,8 @@ class StroopedController : Game() {
     private var joinGameService: JoinGameService = JoinGameService(socket)
     private var gameLifecycleService: GameLifecycleService = GameLifecycleService(socket)
 
+    private val errorMessages: ArrayList<String> = ArrayList()
+
     override fun create() {
         openJoinScreen()
         gameLifecycleService.onNextTask {
@@ -44,8 +46,17 @@ class StroopedController : Game() {
 
     fun connectToGame(username: String, joinPin: String) {
         joinGameService.joinGame(username, joinPin) {
-            GameSingleton.room = it
-            changeScreen(LobbyScreen(this))
+            it.fold(
+                { gameRoom ->
+                    GameSingleton.room = gameRoom
+                    changeScreen(LobbyScreen(this))
+                },
+                { err ->
+                    println("Failed to join game!: ${err.message}")
+                    // Re-render JoinGameScreen with error message
+                    changeScreen(JoinGameScreen(this, err.localizedMessage))
+                }
+            )
         }
     }
     fun openJoinScreen() {

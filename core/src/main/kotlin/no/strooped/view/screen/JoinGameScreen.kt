@@ -9,12 +9,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import no.strooped.StroopedController
 import no.strooped.TextureSizes
+import no.strooped.model.GameRoom
+import no.strooped.view.screen.components.Label
 import no.strooped.view.screen.components.TextFieldInput
 import no.strooped.view.screen.components.UIButton
+
 /**
  * Uses https://otter.tech/an-mvc-guide-for-libgdx/ as inspiration
  * */
-class JoinGameScreen(private val controller: StroopedController) : Screen {
+class JoinGameScreen(
+    private val controller: StroopedController,
+    private val errorMessage: String? = null,
+    private val storedGame: GameRoom? = null
+) : Screen {
 
     var ui: Stage = Stage(ScreenViewport())
     private val backgroundPosition = Vector2(0f, 0f)
@@ -69,6 +76,12 @@ class JoinGameScreen(private val controller: StroopedController) : Screen {
 
         joinButton.onClick {
             controller.connectToGame(username = username.text, joinPin = pin.text)
+        }
+
+        errorMessage?.let {
+            println("Found error message $it")
+            val errorMessage = Label(it, Vector2(joinButtonPosition.x, joinButtonPosition.y + 75), 200f, 2f)
+            ui.addActor(errorMessage)
         }
     }
 

@@ -7,21 +7,28 @@ import org.json.JSONObject
 
 class SocketService {
     private var socketInstance: Socket? = null
-    var listener: ((Socket) -> Unit)? = null
+    var listener: ((Result<Socket>) -> Unit)? = null
     var listeners: HashMap<String, ((JSONObject) -> Unit)> = HashMap()
-    fun onConnect(callback: (Socket) -> Unit) {
+    fun onConnect(callback: ((Result<Socket>) -> Unit)) {
         listener = callback
     }
+
+    @Suppress("TooGenericExceptionThrown")
     fun connect(joinPin: String, username: String) {
         val socket = IO.socket("https://strooped-api.lokalvert.tech", createIOOptions(joinPin, username))
         socketInstance = socket
         socket.on(Socket.EVENT_CONNECT) {
             Gdx.app.postRunnable {
-                listener?.invoke(socket)
+                listener?.invoke(kotlin.runCatching { socket })
             }
         }
         socket.on(Socket.EVENT_ERROR) {
+            val errorMessage = it[0].toString().trim()
             println("Im failing")
+            println(errorMessage)
+            Gdx.app.postRunnable {
+                listener?.invoke(runCatching { throw RuntimeException("Could not connect to socket: $errorMessage") })
+            }
         }
         listeners.forEach { (type, callback) ->
             socket.on(type) {
