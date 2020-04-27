@@ -2,16 +2,16 @@ package no.strooped
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Screen
+import no.strooped.model.Answer
 import no.strooped.service.GameLifecycleService
 import no.strooped.service.JoinGameService
 import no.strooped.service.SocketService
+import no.strooped.singleton.GameSingleton
 import no.strooped.view.screen.EndGameScreen
 import no.strooped.view.screen.EndRoundScreen
 import no.strooped.view.screen.JoinGameScreen
 import no.strooped.view.screen.LobbyScreen
 import no.strooped.view.screen.TaskScreen
-import no.strooped.model.Answer
-import no.strooped.singleton.GameSingleton
 
 const val TITLE = "Strooped"
 

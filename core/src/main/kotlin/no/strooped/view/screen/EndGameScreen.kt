@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import no.strooped.singleton.GameSingleton
 import no.strooped.StroopedController
+import no.strooped.singleton.GameSingleton
 import no.strooped.singleton.TextureSizes
 import no.strooped.view.components.Label
 import no.strooped.view.components.PlacementLabel
